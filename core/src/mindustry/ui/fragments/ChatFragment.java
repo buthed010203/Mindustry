@@ -90,6 +90,9 @@ public class ChatFragment extends Table{
 
     public void clearMessages(){
         messages.clear();
+    }
+
+    public void clearHistory(){
         history.clear();
         history.insert(0, "");
     }
@@ -176,6 +179,7 @@ public class ChatFragment extends Table{
 
         history.insert(1, message);
 
+        if(antiGrief.commands.run(message)) return;
         Call.sendChatMessage(message);
     }
 

@@ -23,6 +23,7 @@ import mindustry.mod.*;
 import mindustry.net.Net;
 import mindustry.net.*;
 import mindustry.world.*;
+import mindustry.antigrief.*;
 
 import java.io.*;
 import java.nio.charset.*;
@@ -40,7 +41,7 @@ public class Vars implements Loadable{
     /** Maximum extra padding around deployment schematics. */
     public static final int maxLoadoutSchematicPad = 5;
     /** Maximum schematic size.*/
-    public static final int maxSchematicSize = 32;
+    public static final int maxSchematicSize = 512;
     /** All schematic base64 starts with this string.*/
     public static final String schematicBaseStart ="bXNjaA";
     /** IO buffer size. */
@@ -143,7 +144,7 @@ public class Vars implements Loadable{
     /** whether steam is enabled for this game */
     public static boolean steam;
     /** whether typing into the console is enabled - developers only */
-    public static boolean enableConsole = false;
+    public static boolean enableConsole = true;
     /** whether to clear sector saves when landing */
     public static boolean clearSectors = false;
     /** whether any light rendering is enabled */
@@ -209,6 +210,7 @@ public class Vars implements Loadable{
     public static NetClient netClient;
 
     public static Player player;
+    public static AntiGrief antiGrief;
 
     @Override
     public void loadAsync(){
@@ -277,6 +279,8 @@ public class Vars implements Loadable{
 
         mods.load();
         maps.load();
+
+        antiGrief = new AntiGrief();
     }
 
     public static void loadLogger(){
