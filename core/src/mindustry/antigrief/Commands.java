@@ -1,14 +1,9 @@
 package mindustry.antigrief;
 
 import arc.*;
-import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.CommandHandler.*;
-import mindustry.core.*;
-import mindustry.world.*;
-
-import java.util.*;
 
 import static mindustry.Vars.*;
 
@@ -37,21 +32,16 @@ public class Commands {
            ui.chatfrag.clearMessages();
         });
 
-        handler.register("info", "<on/off>", "Gets antigrief info for a tile", args -> {
-            var infos = antiGrief.tileInfos.get(getCursorTile());
-            if (infos == null || infos.size == 0) {
+        handler.register("info", "Gets antigrief info for tile below the cursor", args -> {
+            var infos = antiGrief.tileInfos.get(antiGrief.getCursorTile());
+            if (infos.size == 0) {
                 player.sendMessage("No info found");
                 return;
             }
             infos.forEach(info -> {
-                player.sendMessage(info.interaction.name() + " by " + info.lastInteraction.name + ",[white] block was " + info.block.name);
+                player.sendMessage(info.interaction.name() + " by " + info.player.name + ",[white] block was " + info.block.name);
             });
         });
-    }
-
-    private Tile getCursorTile() {
-        Vec2 vec = Core.input.mouseWorld(Core.input.mouseX(), Core.input.mouseY());
-        return world.tile(World.toTile(vec.x), World.toTile(vec.y));
     }
 
     public boolean run(String command) {

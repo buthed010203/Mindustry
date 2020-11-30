@@ -15,6 +15,7 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.annotations.Annotations.*;
+import mindustry.antigrief.*;
 import mindustry.content.*;
 import mindustry.core.GameState.*;
 import mindustry.ctype.*;
@@ -96,15 +97,21 @@ public class HudFragment extends Fragment{
         //minimap + position
         parent.fill(t -> {
             t.name = "minimap/position";
-            t.visible(() -> Core.settings.getBool("minimap") && shown);
+            t.visible(() -> shown);
+            //antigrief hud
+            t.add(new InfoHud()).name("infohud").visible(() -> antiGrief.showHud && net.active());
+            t.row().visible(() -> antiGrief.showHud);
+            var minimapTable = new Table();
             //minimap
-            t.add(new Minimap()).name("minimap");
-            t.row();
+            minimapTable.add(new Minimap()).name("minimap").visible(() -> Core.settings.getBool("minimap")).right();
+            minimapTable.row().visible(() -> Core.settings.getBool("minimap"));
             //position
-            t.label(() -> player.tileX() + "," + player.tileY())
+            minimapTable.label(() -> player.tileX() + "," + player.tileY())
             .visible(() -> Core.settings.getBool("position"))
             .touchable(Touchable.disabled)
-            .name("position");
+            .name("position")
+            .center();
+            t.add(minimapTable).right();
             t.top().right();
         });
 

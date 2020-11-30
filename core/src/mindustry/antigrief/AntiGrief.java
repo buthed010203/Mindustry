@@ -1,6 +1,11 @@
 package mindustry.antigrief;
 
 import arc.*;
+import arc.math.geom.*;
+import mindustry.core.*;
+import mindustry.world.*;
+
+import static mindustry.Vars.world;
 
 public class AntiGrief {
     public final Commands commands;
@@ -13,6 +18,7 @@ public class AntiGrief {
     private boolean leaveMessages;
 
     public int maxInfosPerTile = 50;
+    public boolean showHud = true;
 
     public AntiGrief() {
         commands = new Commands();
@@ -37,5 +43,10 @@ public class AntiGrief {
         leaveMessages = Core.settings.getBool("antigrief.leaveMessages", true);
 
         maxInfosPerTile = Core.settings.getInt("antigrief.maxInfosPerTile", 50);
+    }
+
+    public Tile getCursorTile() {
+        Vec2 vec = Core.input.mouseWorld(Core.input.mouseX(), Core.input.mouseY());
+        return world.tile(World.toTile(vec.x), World.toTile(vec.y));
     }
 }

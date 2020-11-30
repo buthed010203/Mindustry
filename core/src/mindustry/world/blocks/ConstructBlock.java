@@ -90,6 +90,8 @@ public class ConstructBlock extends Block{
 
         Fx.placeBlock.at(tile.drawx(), tile.drawy(), block.size);
         if(shouldPlay()) Sounds.place.at(tile, calcPitch(true));
+
+        Events.fire(new EventType.BlockBuildEndEvent(tile, builder, team, false, config));
     }
 
     static boolean shouldPlay(){
