@@ -999,80 +999,82 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
 
         table.row();
 
-        //only display everything else if the team is the same
-        if(team == player.team()){
-            table.table(bars -> {
-                bars.defaults().growX().height(18f).pad(4);
+        table.table(bars -> {
+            bars.defaults().growX().height(18f).pad(4);
 
-                displayBars(bars);
-            }).growX();
-            table.row();
-            table.table(this::displayConsumption).growX();
+            displayBars(bars);
+        }).growX();
+        table.row();
+        table.table(this::displayConsumption).growX();
 
-            boolean displayFlow = (block.category == Category.distribution || block.category == Category.liquid) && Core.settings.getBool("flow") && block.displayFlow;
+        boolean displayFlow = (block.category == Category.distribution || block.category == Category.liquid) && Core.settings.getBool("flow") && block.displayFlow;
 
-            if(displayFlow){
-                String ps = " " + StatUnit.perSecond.localized();
+        if(displayFlow){
+            String ps = " " + StatUnit.perSecond.localized();
 
-                if(items != null){
-                    table.row();
-                    table.left();
-                    table.table(l -> {
-                        Bits current = new Bits();
-
-                        Runnable rebuild = () -> {
-                            l.clearChildren();
-                            l.left();
-                            for(Item item : content.items()){
-                                if(items.hasFlowItem(item)){
-                                    l.image(item.icon(Cicon.small)).padRight(3f);
-                                    l.label(() -> items.getFlowRate(item) < 0 ? "..." : Strings.fixed(items.getFlowRate(item), 1) + ps).color(Color.lightGray);
-                                    l.row();
-                                }
-                            }
-                        };
-
-                        rebuild.run();
-                        l.update(() -> {
-                            for(Item item : content.items()){
-                                if(items.hasFlowItem(item) && !current.get(item.id)){
-                                    current.set(item.id);
-                                    rebuild.run();
-                                }
-                            }
-                        });
-                    }).left();
-                }
-
-                if(liquids != null){
-                    table.row();
-                    table.table(l -> {
-                        boolean[] had = {false};
-
-                        Runnable rebuild = () -> {
-                            l.clearChildren();
-                            l.left();
-                            l.image(() -> liquids.current().icon(Cicon.small)).padRight(3f);
-                            l.label(() -> liquids.getFlowRate() < 0 ? "..." : Strings.fixed(liquids.getFlowRate(), 2) + ps).color(Color.lightGray);
-                        };
-
-                        l.update(() -> {
-                           if(!had[0] && liquids.hadFlow()){
-                               had[0] = true;
-                               rebuild.run();
-                           }
-                        });
-                    }).left();
-                }
-            }
-
-            if(net.active() && lastAccessed != null){
+            if(items != null){
                 table.row();
-                table.add(Core.bundle.format("lastaccessed", lastAccessed)).growX().wrap().left();
+                table.left();
+                table.table(l -> {
+                    Bits current = new Bits();
+
+                    Runnable rebuild = () -> {
+                        l.clearChildren();
+                        l.left();
+                        for(Item item : content.items()){
+                            if(items.hasFlowItem(item)){
+                                l.image(item.icon(Cicon.small)).padRight(3f);
+                                l.label(() -> items.getFlowRate(item) < 0 ? "..." : Strings.fixed(items.getFlowRate(item), 1) + ps).color(Color.lightGray);
+                                l.row();
+                            }
+                        }
+                    };
+
+                    rebuild.run();
+                    l.update(() -> {
+                        for(Item item : content.items()){
+                            if(items.hasFlowItem(item) && !current.get(item.id)){
+                                current.set(item.id);
+                                rebuild.run();
+                            }
+                        }
+                    });
+                }).left();
             }
 
-            table.marginBottom(-5);
+            if(liquids != null){
+                table.row();
+                table.table(l -> {
+                    boolean[] had = {false};
+
+                    Runnable rebuild = () -> {
+                        l.clearChildren();
+                        l.left();
+                        l.image(() -> liquids.current().icon(Cicon.small)).padRight(3f);
+                        l.label(() -> liquids.getFlowRate() < 0 ? "..." : Strings.fixed(liquids.getFlowRate(), 2) + ps).color(Color.lightGray);
+                    };
+
+                    l.update(() -> {
+                       if(!had[0] && liquids.hadFlow()){
+                           had[0] = true;
+                           rebuild.run();
+                       }
+                    });
+                }).left();
+            }
         }
+
+        if(net.active() && lastAccessed != null){
+            table.row();
+            table.add(Core.bundle.format("lastaccessed", lastAccessed)).growX().wrap().left();
+        }
+
+        if (team != player.team()) {
+            table.row();
+            table.add("[accent]Team [#" + team.color.toString() + "]" + team.name).growX().wrap().left();
+        }
+
+        table.marginBottom(-5);
     }
 
     public void displayConsumption(Table table){

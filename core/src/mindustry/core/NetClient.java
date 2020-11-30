@@ -249,7 +249,9 @@ public class NetClient implements ApplicationListener{
     @Remote(variants = Variant.one)
     public static void traceInfo(Player player, TraceInfo info){
         if(player != null){
-            ui.traces.show(player, info);
+            if (!antiGrief.tracer.fire(player, info)) {
+                ui.traces.show(player, info);
+            }
         }
     }
 
