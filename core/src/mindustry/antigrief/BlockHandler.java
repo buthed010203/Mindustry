@@ -43,7 +43,7 @@ public class BlockHandler{
         if (unit == null || !unit.isPlayer()) return;
 
         var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id, null);
-        var info = new TileInfo(tile.block(), tile.x, tile.y, tile.build.rotation, null, InteractionType.destroyed, player);
+        var info = new TileInfo(tile.block(), tile.x, tile.y, tile.build.rotation, null, InteractionType.deconstructed, player);
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
         if (info.block instanceof ConstructBlock) {

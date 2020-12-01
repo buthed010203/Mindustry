@@ -101,6 +101,6 @@ public class TileInfos{
     }
 
     enum InteractionType {
-        built, destroyed, configured, rotated
+        built, deconstructed, configured, rotated
     }
 }
