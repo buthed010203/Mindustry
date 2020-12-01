@@ -33,7 +33,7 @@ public class InfoHud extends Table{
             int added = 0;
             for(int i = infos.size - 1; i >= 0 && added < antiGrief.maxInfoInHud; i--) {
                 var info = infos.get(i);
-                StringBuilder str = new StringBuilder(info.player.name + "[white] " + info.interaction.name() + " " + ((char)Fonts.getUnicode(info.block.name)));
+                StringBuilder str = new StringBuilder(info.player.name + "[white] " + info.interaction.name() + " " + Fonts.getUnicodeStr(info.block.name));
 
                 if(info.interaction == InteractionType.configured && info.block instanceof Sorter){
                     if (info.config != null){
