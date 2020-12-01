@@ -29,7 +29,7 @@ public class TileInfos{
     }
 
     public void add(TileInfo info, Tile tile) {
-        this.add(info, tile.x, tile.y);
+        add(info, tile.x, tile.y);
     }
 
     public Seq<TileInfo> get(int x, int y) {
@@ -38,15 +38,24 @@ public class TileInfos{
     }
 
     public Seq<TileInfo> get(Tile tile) {
-        return this.get(tile.x, tile.y);
+        return get(tile.x, tile.y);
     }
 
     public TileInfo getLast(Tile tile) {
-        return this.getLast(tile.x, tile.y);
+        return getLast(tile.x, tile.y);
+    }
+
+    public void remove(TileInfo info, Tile tile) {
+        remove(info, tile.x, tile.y);
+    }
+
+    public void remove(TileInfo info, int x, int y) {
+        if (get(x, y).size == 0) return;
+        infos.get(y * width + x).remove(info);
     }
 
     public TileInfo getLast(int x, int y) {
-        var infos = this.get(x, y);
+        var infos = get(x, y);
         if (infos.size == 0) return null;
         return infos.get(infos.size - 1);
     }

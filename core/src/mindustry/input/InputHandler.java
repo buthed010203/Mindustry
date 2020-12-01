@@ -291,10 +291,14 @@ public abstract class InputHandler implements InputProcessor, GestureListener{
             throw new ValidateException(player, "Player cannot rotate a block.");
         }
 
-        if(player != null) tile.lastAccessed = player.name;
         tile.rotation = Mathf.mod(tile.rotation + Mathf.sign(direction), 4);
         tile.updateProximity();
         tile.noSleep();
+
+        if(player != null) {
+            tile.lastAccessed = player.name;
+            antiGrief.blockHandler.blockBuilt(player.unit(), tile.tile, true);
+        }
     }
 
     @Remote(targets = Loc.both, called = Loc.both, forward = true)

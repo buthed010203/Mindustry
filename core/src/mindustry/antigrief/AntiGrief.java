@@ -18,6 +18,7 @@ public class AntiGrief {
     private boolean leaveMessages;
 
     public int maxInfosPerTile = 50;
+    public int maxInfoInHud = 5;
     public boolean showHud = true;
 
     public AntiGrief() {

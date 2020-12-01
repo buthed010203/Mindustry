@@ -100,7 +100,7 @@ public class HudFragment extends Fragment{
             t.visible(() -> shown);
             //antigrief hud
             t.add(new InfoHud()).name("infohud").visible(() -> antiGrief.showHud && net.active());
-            t.row().visible(() -> antiGrief.showHud);
+            t.row();
             var minimapTable = new Table();
             //minimap
             minimapTable.add(new Minimap()).name("minimap").visible(() -> Core.settings.getBool("minimap")).right();
