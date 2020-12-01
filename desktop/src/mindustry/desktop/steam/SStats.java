@@ -94,18 +94,18 @@ public class SStats implements SteamUserStatsCallback{
         });
 
         Events.on(TurnEvent.class, e -> {
-            float total = 0;
-            for(Planet planet : content.planets()){
-                for(Sector sec : planet.sectors){
-                    if(sec.hasBase()){
-                        for(var v : sec.info.production.values()){
-                            total += v.mean;
-                        }
-                    }
-                }
-            }
-
-            SStat.maxProduction.max((int)total);
+//            float total = 0;
+//            for(Planet planet : content.planets()){
+//                for(Sector sec : planet.sectors){
+//                    if(sec.hasBase()){
+//                        for(var v : sec.info.production.values()){
+//                            total += v.mean;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            SStat.maxProduction.max((int)total);
         });
 
         Events.run(Trigger.newGame, () -> Core.app.post(() -> {
@@ -174,9 +174,9 @@ public class SStats implements SteamUserStatsCallback{
         });
 
         Events.on(UnitControlEvent.class, e -> {
-            if(e.unit instanceof BlockUnitc block && block.tile().block == Blocks.router){
-                becomeRouter.complete();
-            }
+//            if(e.unit instanceof BlockUnitc block && block.tile().block == Blocks.router){
+//                becomeRouter.complete();
+//            }
         });
 
         Events.on(SchematicCreateEvent.class, e -> {
