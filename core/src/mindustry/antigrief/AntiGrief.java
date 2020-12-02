@@ -57,16 +57,16 @@ public class AntiGrief {
         var time = new StringBuilder();
 
         if (secs >= 60) {
-            mins = secs - (secs % 60);
+            mins = (secs - (secs % 60)) / 60;
             secs = secs % 60;
         }
 
         if (mins >= 60) {
-            hours = mins - (mins % 60);
+            hours = (mins - (mins % 60)) / 60;
             mins = mins % 60;
         }
 
-        if (secs == 0) time.append(millis % 1000).append("ms");
+        if (secs == 0 && mins == 0 && hours == 0) time.append(millis % 1000).append("ms");
         else if (mins == 0) time.append(secs).append("s");
         else if (hours == 0) time.append(mins).append("m").append(secs).append("s");
         else time.append(hours).append("h").append(mins).append("m").append(secs).append("s");
