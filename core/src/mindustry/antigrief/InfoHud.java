@@ -7,7 +7,9 @@ import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.ui.*;
+import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
+import mindustry.world.blocks.experimental.*;
 import mindustry.world.blocks.units.*;
 
 import static mindustry.Vars.*;
@@ -34,6 +36,7 @@ public class InfoHud extends Table{
             int added = 0;
             for(int i = infos.size - 1; i >= 0 && added < antiGrief.maxInfoInHud; i--) {
                 var info = infos.get(i);
+                if (info.block == null) continue;
                 StringBuilder str = new StringBuilder(info.player.name + "[white] " + info.interaction.name() + " " + Fonts.getUnicodeStr(info.block.name));
 
                 if(info.interaction == InteractionType.configured && info.block instanceof Sorter){
@@ -57,6 +60,13 @@ public class InfoHud extends Table{
                     if((Integer)info.config != -1){
                         str.append(Fonts.getUnicodeStr(((UnitFactory)info.block).plans.get((Integer)info.config).unit.name));
                     }else{
+                        str.append("null");
+                    }
+                }else if(info.interaction == InteractionType.configured && info.block instanceof BlockForge){
+                    str.append(" to ");
+                    if (info.config != null) {
+                        str.append(Fonts.getUnicodeStr(((Block)info.config).name));
+                    } else {
                         str.append("null");
                     }
                 }else if(info.interaction == InteractionType.rotated){

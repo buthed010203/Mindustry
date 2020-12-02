@@ -68,6 +68,7 @@ public class TileInfos{
 
     static class TileInfo {
         public Block block;
+        public String blockName;
 
         public int x;
         public int y;
@@ -90,6 +91,7 @@ public class TileInfos{
             this.player = player;
 
             timestamp = Time.millis();
+            blockName = block.name;
         }
     }
 
@@ -106,6 +108,6 @@ public class TileInfos{
     }
 
     enum InteractionType {
-        built, deconstructed, configured, rotated
+        built, deconstructed, configured, rotated, pickedUp, dropped
     }
 }

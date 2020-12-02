@@ -67,7 +67,7 @@ public class AntiGrief {
         }
 
         if (secs == 0 && mins == 0 && hours == 0) time.append(millis % 1000).append("ms");
-        else if (mins == 0) time.append(secs).append("s");
+        else if (mins == 0 && hours == 0) time.append(secs).append("s");
         else if (hours == 0) time.append(mins).append("m").append(secs).append("s");
         else time.append(hours).append("h").append(mins).append("m").append(secs).append("s");
 
