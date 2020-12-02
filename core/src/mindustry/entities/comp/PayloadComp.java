@@ -15,6 +15,8 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.payloads.*;
 
+import static mindustry.Vars.antiGrief;
+
 /** An entity that holds a payload. */
 @Component
 abstract class PayloadComp implements Posc, Rotc, Hitboxc, Unitc{
@@ -131,10 +133,14 @@ abstract class PayloadComp implements Posc, Rotc, Hitboxc, Unitc{
             int rot = (int)((rotation + 45f) / 90f) % 4;
             payload.place(on, rot);
 
-            if(isPlayer()) payload.build.lastAccessed = getPlayer().name;
-
             Fx.unitDrop.at(tile);
             Fx.placeBlock.at(on.drawx(), on.drawy(), on.block().size);
+
+            if(isPlayer()){
+                payload.build.lastAccessed = getPlayer().name;
+                antiGrief.blockHandler.blockDropped(getPlayer().unit(), on);
+            }
+
             return true;
         }
 

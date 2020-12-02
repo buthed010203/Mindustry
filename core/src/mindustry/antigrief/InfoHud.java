@@ -10,6 +10,7 @@ import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.experimental.*;
+import mindustry.world.blocks.sandbox.*;
 import mindustry.world.blocks.units.*;
 
 import static mindustry.Vars.*;
@@ -39,9 +40,9 @@ public class InfoHud extends Table{
                 if (info.block == null) continue;
                 StringBuilder str = new StringBuilder(info.player.name + "[white] " + info.interaction.name().replace("_", " ") + " " + Fonts.getUnicodeStr(info.block.name));
 
-                if(info.interaction == InteractionType.configured && info.block instanceof Sorter){
+                if(info.interaction == InteractionType.configured && (info.block instanceof Sorter || info.block instanceof ItemSource || info.block instanceof LiquidSource)){
                     if (info.config != null){
-                        str.append(" to ").append(Fonts.getUnicodeStr(((Item)info.config).name));
+                        str.append(" to ").append(Fonts.getUnicodeStr(info.block instanceof LiquidSource ? ((Liquid)info.config).name : ((Item)info.config).name));
                     }else{
                         str.append(" to ").append("null");
                     }

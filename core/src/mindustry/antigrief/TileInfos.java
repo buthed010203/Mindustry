@@ -108,6 +108,6 @@ public class TileInfos{
     }
 
     enum InteractionType {
-        built, deconstructed, configured, rotated, picked_up, dropped
+        built, removed, configured, rotated, picked_up, dropped
     }
 }

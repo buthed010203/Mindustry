@@ -11,6 +11,7 @@ import mindustry.world.blocks.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.power.*;
+import mindustry.world.blocks.sandbox.*;
 
 import static mindustry.Vars.*;
 
@@ -62,7 +63,7 @@ public class BlockHandler{
             return;
         }
 
-        var info = new TileInfo(tile.block() == Blocks.air ? lastInfo.block : tile.block(), tile.x, tile.y, tile.build == null ? lastInfo.rotation : tile.build.rotation, null, InteractionType.deconstructed, player);
+        var info = new TileInfo(tile.block() == Blocks.air ? lastInfo.block : tile.block(), tile.x, tile.y, tile.build == null ? lastInfo.rotation : tile.build.rotation, null, InteractionType.removed, player);
 
         if (info.block instanceof ConstructBlock) {
             info.block = ((ConstructBuild)tile.build).cblock == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).cblock;
@@ -85,7 +86,8 @@ public class BlockHandler{
         if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id) {
             if (lastInfo.interaction == InteractionType.configured && (info.block instanceof PowerNode || info.block instanceof MassDriver)) return;
             if (lastInfo.config == info.config) return;
-            if (lastInfo.interaction == InteractionType.configured && info.block instanceof Sorter) {
+            if (lastInfo.interaction == InteractionType.configured && (info.block instanceof Sorter || info.block instanceof ItemSource || info.block instanceof LiquidSource)) {
+                lastInfo.timestamp = info.timestamp;
                 lastInfo.config = info.config;
                 return;
             }
