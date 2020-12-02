@@ -10,6 +10,7 @@ import static mindustry.Vars.*;
 public class AntiGrief {
     public final Commands commands;
     public final BlockHandler blockHandler;
+    public final PlayerHandler playerHandler;
     public final TileInfos tileInfos = new TileInfos();
     public final TracePlayer tracer = new TracePlayer();
 
@@ -24,6 +25,7 @@ public class AntiGrief {
     public AntiGrief() {
         commands = new Commands();
         blockHandler = new BlockHandler();
+        playerHandler = new PlayerHandler();
 
         loadSettings();
     }

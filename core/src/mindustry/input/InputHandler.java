@@ -265,6 +265,7 @@ public abstract class InputHandler implements InputProcessor, GestureListener{
             pay.controlling().each(u -> {
                 if(u instanceof Payloadc){
                     Call.payloadDropped(u, u.x, u.y);
+                    antiGrief.blockHandler.blockDropped(player.unit(), pay.tileOn());
                 }
             });
         }

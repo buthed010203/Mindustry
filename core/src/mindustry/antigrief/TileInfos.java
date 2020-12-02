@@ -68,7 +68,6 @@ public class TileInfos{
 
     static class TileInfo {
         public Block block;
-        public String blockName;
 
         public int x;
         public int y;
@@ -91,23 +90,24 @@ public class TileInfos{
             this.player = player;
 
             timestamp = Time.millis();
-            blockName = block.name;
         }
     }
 
     static class SemiPlayer {
         public String name;
         public int id;
-        public TraceInfo trace;
 
-        public SemiPlayer(String name, int id, TraceInfo trace){
+        public SemiPlayer(String name, int id){
             this.name = name;
             this.id = id;
-            this.trace = trace;
+        }
+
+        public TraceInfo getTrace() {
+            return antiGrief.tracer.get(id);
         }
     }
 
     enum InteractionType {
-        built, deconstructed, configured, rotated, pickedUp, dropped
+        built, deconstructed, configured, rotated, picked_up, dropped
     }
 }

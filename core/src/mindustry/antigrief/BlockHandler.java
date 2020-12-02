@@ -25,9 +25,15 @@ public class BlockHandler{
 
     public void blockBuilt(Unit unit, Tile tile, boolean rotated) {
         if (unit == null || !unit.isPlayer() || tile.block() == null) return;
-        var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id, null);
-        var info = new TileInfo(tile.block(), tile.x, tile.y, tile.build.rotation, null, rotated ? InteractionType.rotated : InteractionType.built, player);
+        var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id);
         var lastInfo = antiGrief.tileInfos.getLast(tile);
+
+        if (lastInfo == null && tile.block() == Blocks.air && tile.build == null) { // Sandbox blocks seem to have issues
+//            Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged; sandbox=" + state.rules.infiniteResources);
+            return;
+        }
+
+        var info = new TileInfo(tile.block() == Blocks.air ? lastInfo.block : tile.block(), tile.x, tile.y, tile.build == null ? lastInfo.rotation : tile.build.rotation, null, InteractionType.built, player);
 
         if (info.block instanceof ConstructBlock) {
             info.block = ((ConstructBuild)tile.build).cblock == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).cblock;
@@ -48,11 +54,11 @@ public class BlockHandler{
     public void blockDestroyed(Unit unit, Tile tile) {
         if (unit == null || !unit.isPlayer() || tile.block() == null) return;
 
-        var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id, null);
+        var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id);
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
         if (lastInfo == null && tile.block() == Blocks.air && tile.build == null) { // Sandbox blocks seem to have issues
-            Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged; sandbox=" + state.rules.infiniteResources);
+//            Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged; sandbox=" + state.rules.infiniteResources);
             return;
         }
 
@@ -72,7 +78,7 @@ public class BlockHandler{
 
     public void blockConfig(Player p, Tile tile, Object config) {
         if (p == null || tile == null || tile.block() == null) return;
-        var player = new SemiPlayer(p.name(), p.id, null);
+        var player = new SemiPlayer(p.name(), p.id);
         var info = new TileInfo(tile.block(), tile.x, tile.y, tile.build.rotation, config, InteractionType.configured, player);
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
@@ -90,8 +96,8 @@ public class BlockHandler{
     public void blockPickedUp(Unit unit, Building build) {
         if (unit == null || !unit.isPlayer() || build.block() == null) return;
 
-        var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id, null);
-        var info = new TileInfo(build.block(), build.tile.x, build.tile.y, build.rotation, null, InteractionType.pickedUp, player);
+        var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id);
+        var info = new TileInfo(build.block(), build.tile.x, build.tile.y, build.rotation, null, InteractionType.picked_up, player);
         var lastInfo = antiGrief.tileInfos.getLast(build.tile.x, build.tile.y);
 
         if (info.block instanceof ConstructBlock) {
@@ -109,7 +115,7 @@ public class BlockHandler{
     public void blockDropped(Unit unit, Tile tile) {
         if (unit == null || !unit.isPlayer() || tile.block() == null) return;
 
-        var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id, null);
+        var player = new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id);
         var info = new TileInfo(tile.block(), tile.x, tile.y, tile.build.rotation, null, InteractionType.dropped, player);
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
