@@ -1,6 +1,7 @@
 package mindustry.antigrief;
 
 import arc.scene.ui.layout.*;
+import arc.util.*;
 import mindustry.antigrief.TileInfos.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
@@ -16,7 +17,7 @@ public class InfoHud extends Table{
         background(Tex.pane);
         update(() -> {
             clear();
-            var tile = antiGrief.getCursorTile();
+            var tile = AntiGrief.getCursorTile();
             if (tile == null) {
                 add("Tile out of map");
                 return;
@@ -72,6 +73,7 @@ public class InfoHud extends Table{
                 }
 
                 row();
+                str.append(" ").append(AntiGrief.prettyTime(Time.millis() - info.timestamp)).append(" ago");
                 add(str).left();
                 added++;
             }

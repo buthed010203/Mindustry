@@ -2,6 +2,7 @@ package mindustry.antigrief;
 
 import arc.*;
 import arc.struct.*;
+import arc.util.*;
 import mindustry.game.EventType.*;
 import mindustry.net.Administration.*;
 import mindustry.world.*;
@@ -77,6 +78,8 @@ public class TileInfos{
         public InteractionType interaction;
         public SemiPlayer player;
 
+        public long timestamp;
+
         public TileInfo(Block block, int x, int y, int rotation, Object config, InteractionType interaction, SemiPlayer player){
             this.block = block;
             this.x = x;
@@ -85,6 +88,8 @@ public class TileInfos{
             this.config = config;
             this.interaction = interaction;
             this.player = player;
+
+            timestamp = Time.millis();
         }
     }
 

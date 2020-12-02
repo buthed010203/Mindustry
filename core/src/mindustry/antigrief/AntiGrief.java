@@ -5,7 +5,7 @@ import arc.math.geom.*;
 import mindustry.core.*;
 import mindustry.world.*;
 
-import static mindustry.Vars.world;
+import static mindustry.Vars.*;
 
 public class AntiGrief {
     public final Commands commands;
@@ -46,8 +46,31 @@ public class AntiGrief {
         maxInfosPerTile = Core.settings.getInt("antigrief.maxInfosPerTile", 50);
     }
 
-    public Tile getCursorTile() {
+    public static Tile getCursorTile() {
         Vec2 vec = Core.input.mouseWorld(Core.input.mouseX(), Core.input.mouseY());
         return world.tile(World.toTile(vec.x), World.toTile(vec.y));
+    }
+
+    public static String prettyTime(long millis) {
+        long secs = millis / 1000;
+        long mins = 0, hours = 0;
+        var time = new StringBuilder();
+
+        if (secs >= 60) {
+            mins = secs - (secs % 60);
+            secs = secs % 60;
+        }
+
+        if (mins >= 60) {
+            hours = mins - (mins % 60);
+            mins = mins % 60;
+        }
+
+        if (secs == 0) time.append(millis % 1000).append("ms");
+        else if (mins == 0) time.append(secs).append("s");
+        else if (hours == 0) time.append(mins).append("m").append(secs).append("s");
+        else time.append(hours).append("h").append(mins).append("m").append(secs).append("s");
+
+        return time.toString();
     }
 }
