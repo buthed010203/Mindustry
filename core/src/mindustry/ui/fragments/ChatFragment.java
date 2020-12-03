@@ -182,7 +182,7 @@ public class ChatFragment extends Table{
 
         var response = antiGrief.commands.run(message);
         if (response == ResponseType.fewArguments || response == ResponseType.manyArguments) {
-            addMessage("Invalid usage", null);
+            addMessage("[#ec7063]Invalid usage", null);
             return;
         } else if (response == ResponseType.valid) {
             return;

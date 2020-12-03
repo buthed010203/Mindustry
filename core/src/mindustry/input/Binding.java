@@ -70,6 +70,8 @@ public enum Binding implements KeyBind{
     chat_history_next(KeyCode.down),
     chat_scroll(new Axis(KeyCode.scroll)),
     console(KeyCode.f8),
+
+    display_deconstructed_blocks(KeyCode.h, "Anti Grief"),
     ;
 
     private final KeybindValue defaultValue;

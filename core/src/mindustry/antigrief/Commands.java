@@ -34,12 +34,12 @@ public class Commands {
 
         handler.register("info", "<x> <y>", "Gets antigrief info for a tile", args -> {
             if (!Strings.canParseInt(args[0])) {
-                AntiGrief.sendMessage("x is not a number");
+                AntiGrief.sendMessage("[#f5b041]x[#f8c471] is not a number");
                 return;
             }
 
             if (!Strings.canParseInt(args[1])) {
-                AntiGrief.sendMessage("y is not a number");
+                AntiGrief.sendMessage("[#f5b041]y[#f8c471] is not a number");
                 return;
             }
 
@@ -48,25 +48,21 @@ public class Commands {
 
             var infos = antiGrief.tileInfos.get(x, y);
             if (infos.size == 0) {
-                AntiGrief.sendMessage("No info found");
+                AntiGrief.sendMessage("[#f5b041]No info found");
                 return;
             }
-            AntiGrief.sendMessage("Found " + infos.size + " interactions:");
+            AntiGrief.sendMessage("Found " + infos.size + " interaction" + (infos.size == 1 ? "" : "s") + ":");
             infos.forEach(info -> {
-                AntiGrief.sendMessage(info.toString(true));
+                AntiGrief.sendMessage(info.toString(true, false));
             });
         });
 
         handler.register("toggleremoved", "Displays removed blocks", args -> {
-            AntiGrief.sendMessage("Displaying of removed blocks is set to " + !displayRemoved);
-            displayRemoved = !displayRemoved;
-            renderer.blocks.reRenderShadows();
+            toggleDisplayRemoved();
         });
 
 //        handler.register("toggleRemoved", "Displays removed blocks", args -> {
-//            AntiGrief.sendMessage("Displaying of removed blocks is set to " + !displayRemoved);
-//            displayRemoved = !displayRemoved;
-//            renderer.blocks.reRenderShadows();
+//            toggleDisplayRemoved();
 //        });
 
         Events.on(EventType.StateChangeEvent.class, e -> {
@@ -74,6 +70,17 @@ public class Commands {
                 displayRemoved = false;
             }
         });
+    }
+
+    public void toggleDisplayRemoved() {
+        if (!state.isPlaying() && !state.isPaused()){
+            displayRemoved = false;
+            return;
+        }
+
+        AntiGrief.sendMessage("[#f8c471]Displaying of removed blocks is set to [#f5b041] " + !displayRemoved);
+        displayRemoved = !displayRemoved;
+        renderer.blocks.reRenderShadows();
     }
 
     public ResponseType run(String command) {

@@ -143,9 +143,15 @@ public class TileInfos{
             timestamp = Time.millis();
         }
 
-        public String toString() {
+        public String toString(boolean withTimestamp, boolean color) {
             if (block == null) return "???";
-            StringBuilder str = new StringBuilder(player.name + "[white] " + interaction.name().replace("_", " ") + " " + Fonts.getUnicodeStr(block.name));
+            StringBuilder str = new StringBuilder();
+            str.append(player.name);
+            str.append(color ? "[#f8c471] " : "[white] ");
+            str.append(interaction.name().replace("_", " "));
+            str.append("[white] ");
+            str.append(Fonts.getUnicodeStr(block.name));
+            str.append("[]");
 
             if (interaction == InteractionType.configured) {
                 if(block instanceof MessageBlock){
@@ -201,15 +207,22 @@ public class TileInfos{
                     str.append(Iconc.down);
                 }
             }
+
+            if(withTimestamp) {
+                str.append(" ");
+                str.append(AntiGrief.prettyTime(Time.millis() - timestamp));
+                str.append(" ago");
+            }
+
             return str.toString();
         }
 
         public String toString(boolean withTimestamp) {
-            var str = this.toString();
-            if (withTimestamp){
-                str = str + " " + AntiGrief.prettyTime(Time.millis() - timestamp) + " ago";
-            }
-            return str;
+            return toString(withTimestamp, false);
+        }
+
+        public String toString() {
+            return toString(false, false);
         }
     }
 

@@ -27,23 +27,21 @@ public class PlayerHandler{
         if (player != null) {
             players.put(id, player.name);
 
-            if (antiGrief.joinMessages){
-                var trace = antiGrief.tracer.get(id);
-                if(antiGrief.autoTrace && player.admin){
-                    if(trace == null){
-                        antiGrief.tracer.trace(player, t -> {
-                            if(t != null){
-                                AntiGrief.sendMessage(players.get(id) + "[accent] joined." + " uuid: " + t.uuid + " ip: " + t.ip);
-                            }else{
-                                AntiGrief.sendMessage(players.get(id) + "[accent] joined." + " id: " + id);
-                            }
-                        });
-                    }else{
-                        AntiGrief.sendMessage(players.get(id) + "[accent] joined." + " uuid: " + trace.uuid + " ip: " + trace.ip);
-                    }
+            var trace = antiGrief.tracer.get(id);
+            if(antiGrief.autoTrace && player.admin){
+                if(trace == null){
+                    antiGrief.tracer.trace(player, t -> {
+                        if(t != null){
+                            if (antiGrief.joinMessages) AntiGrief.sendMessage(players.get(id) + "[#f8c471] joined." + " [#f5b041]uuid:[] " + t.uuid + " [#f5b041]ip:[] " + t.ip);
+                        }else{
+                            if (antiGrief.joinMessages) AntiGrief.sendMessage(players.get(id) + "[#f8c471] joined." + " [#f5b041]id:[] " + id);
+                        }
+                    });
                 }else{
-                    AntiGrief.sendMessage(players.get(id) + "[accent] joined." + " id: " + id);
+                    if (antiGrief.joinMessages) AntiGrief.sendMessage(players.get(id) + "[#f8c471] joined." + " [#f5b041]uuid:[] " + trace.uuid + " [#f5b041]ip:[] " + trace.ip);
                 }
+            }else{
+                if (antiGrief.joinMessages) AntiGrief.sendMessage(players.get(id) + "[#f8c471] joined." + " [#f5b041]id:[] " + id);
             }
         }
     }
@@ -52,7 +50,7 @@ public class PlayerHandler{
         if (players.containsKey(id)) {
             var trace = antiGrief.tracer.get(id);
             if (antiGrief.leaveMessages) {
-                AntiGrief.sendMessage(players.get(id) + "[accent] left." + ((antiGrief.autoTrace && trace != null) ? " uuid: " + trace.uuid + " ip: " + trace.ip : " id: " + id));
+                AntiGrief.sendMessage(players.get(id) + "[#f8c471] left." + ((antiGrief.autoTrace && trace != null) ? " [#f5b041]uuid:[] " + trace.uuid + " [#f5b041]ip:[] " + trace.ip : " [#f5b041]id:[] " + id));
             }
             players.remove(id);
         }
