@@ -15,6 +15,7 @@ import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
+import mindustry.world.blocks.storage.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -137,6 +138,7 @@ public class BlockRenderer implements Disposable{
     }
 
     public void drawShadows(){
+        if(antiGrief.commands.displayRemoved) return;
         if(!shadowEvents.isEmpty()){
             Draw.flush();
 
@@ -249,6 +251,7 @@ public class BlockRenderer implements Disposable{
     }
 
     public void drawBlocks(){
+        antiGrief.tileInfos.displayRemoved();
         drawDestroyed();
 
         //draw most tile stuff
@@ -256,6 +259,7 @@ public class BlockRenderer implements Disposable{
             Tile tile = tileview.items[i];
             Block block = tile.block();
             Building entity = tile.build;
+            if (!(block instanceof CoreBlock) && antiGrief.commands.displayRemoved) continue;
 
             Draw.z(Layer.block);
 
@@ -283,7 +287,7 @@ public class BlockRenderer implements Disposable{
             }
         }
 
-        if(renderer.lights.enabled()){
+        if(renderer.lights.enabled() && !antiGrief.commands.displayRemoved){
             //draw lights
             for(int i = 0; i < lightview.size; i++){
                 Tile tile = lightview.items[i];

@@ -11,6 +11,8 @@ public class Commands {
     private final String prefix = "/";
     private final CommandHandler handler = new CommandHandler(prefix);
 
+    public boolean displayRemoved = false;
+
     public Commands() {
         this.register();
     }
@@ -51,6 +53,16 @@ public class Commands {
             infos.forEach(info -> {
                 AntiGrief.sendMessage(info.toString(true));
             });
+        });
+
+        handler.register("toggleremoved", "Displays removed blocks", args -> {
+            AntiGrief.sendMessage("Displaying of removed blocks is set to " + !displayRemoved);
+            displayRemoved = !displayRemoved;
+        });
+
+        handler.register("toggleRemoved", "Displays removed blocks", args -> {
+            AntiGrief.sendMessage("Displaying of removed blocks is set to " + !displayRemoved);
+            displayRemoved = !displayRemoved;
         });
     }
 

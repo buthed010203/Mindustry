@@ -20,6 +20,8 @@ public class AntiGrief {
     public boolean joinMessages;
     public boolean leaveMessages;
 
+    public boolean displayFullSizeBlocks = false;
+
     public int maxInfosPerTile = 50;
     public int maxInfoInHud = 5;
     public boolean showHud = true;
