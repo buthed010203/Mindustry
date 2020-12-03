@@ -249,6 +249,8 @@ public class NetClient implements ApplicationListener{
     @Remote(variants = Variant.one)
     public static void traceInfo(Player player, TraceInfo info){
         if(player != null){
+            info.name = player.name();
+            info.playerId = player.id();
             if (!antiGrief.tracer.fire(player, info)) {
                 ui.traces.show(player, info);
             }
@@ -389,6 +391,7 @@ public class NetClient implements ApplicationListener{
         if(netClient != null){
             netClient.addRemovedEntity(playerid);
         }
+        antiGrief.playerHandler.handleLeave(playerid);
         Groups.player.removeByID(playerid);
     }
 
@@ -432,6 +435,9 @@ public class NetClient implements ApplicationListener{
                 if(add){
                     entity.add();
                     netClient.addRemovedEntity(entity.id());
+                    if (entity instanceof Player) {
+                        antiGrief.playerHandler.handleJoin(id);
+                    }
                 }
             }
         }catch(IOException e){

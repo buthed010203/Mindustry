@@ -584,8 +584,9 @@ public class Administration{
     }
 
     public static class TraceInfo{
-        public String ip, uuid;
+        public String ip, uuid, name;
         public boolean modded, mobile;
+        public int playerId;
 
         public TraceInfo(String ip, String uuid, boolean modded, boolean mobile){
             this.ip = ip;

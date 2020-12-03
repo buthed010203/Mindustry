@@ -4,6 +4,7 @@ import arc.*;
 import arc.func.*;
 import arc.struct.*;
 import arc.util.*;
+import mindustry.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.net.Administration.*;
@@ -26,18 +27,27 @@ public class TracePlayer{
         });
     }
 
+    public void trace(Player player){
+        trace(player, null);
+    }
+
     public void trace(Player player, Cons<TraceInfo> onTrace) {
+        if(!Vars.player.admin && !antiGrief.autoTrace) {
+            if (onTrace != null) onTrace.get(null);
+            return;
+        }
+
+        if (infos.containsKey(player.id)){
+            onTrace.get(infos.get(player.id));
+            return;
+        }
+
+        if (!listeners.containsKey(player.id)) {
+            listeners.put(player.id, onTrace);
+        }
+
         Call.adminRequest(player, AdminAction.trace);
         Log.info("[AntiGrief] Requested trace info for " + player.name);
-        if (onTrace != null) {
-            if (infos.containsKey(player.id)) {
-                onTrace.get(infos.get(player.id));
-            } else {
-                if (!listeners.containsKey(player.id)) {
-                    listeners.put(player.id, onTrace);
-                }
-            }
-        }
     }
 
     public boolean fire(Player player, TraceInfo info) {
@@ -47,7 +57,7 @@ public class TracePlayer{
         infos.put(player.id, info);
 
         if (listeners.containsKey(player.id)) {
-            listeners.get(player.id).get(info);
+            if (listeners.get(player.id) != null) listeners.get(player.id).get(info);
             listeners.remove(player.id);
             return true;
         }

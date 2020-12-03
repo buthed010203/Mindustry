@@ -1,31 +1,51 @@
 package mindustry.antigrief;
 
 import arc.*;
+import arc.struct.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 
 import static mindustry.Vars.*;
 
 public class PlayerHandler{
+    private final ObjectMap<Integer, String> players = new ObjectMap<>();
+    private String lastMap;
+
     public PlayerHandler() {
-        register();
-    }
-
-    public void handleJoin(Player p) {
-        player.sendMessage(p.name + "[white] has joined");
-    }
-
-    public void handlerLeave(Player p) {
-        player.sendMessage(p.name + "[white] has left");
-    }
-
-    private void register() {
-        Events.on(EventType.PlayerJoin.class, e -> {
-            handleJoin(e.player);
+        Events.on(EventType.WorldLoadEvent.class, e -> {
+            if (state.map.name().equals(lastMap) && net.active()) return;
+            lastMap = state.map.name();
+            players.clear();
         });
+    }
 
-        Events.on(EventType.PlayerLeave.class, e -> {
-            handlerLeave(e.player);
-        });
+    public void handleJoin(int id) {
+        if (players.containsKey(id)) return;
+        var player = Groups.player.getByID(id);
+        if (player != null) {
+            players.put(id, player.name);
+
+            if(antiGrief.tracer.get(id) == null) {
+                antiGrief.tracer.trace(player, trace -> {
+                    if (trace != null && antiGrief.joinMessages) {
+                        AntiGrief.sendMessage(players.get(id) + "[accent] left." + " uuid: " + trace.uuid + " ip: " + trace.ip);
+                    }
+                });
+            }
+
+            if (antiGrief.joinMessages && !antiGrief.autoTrace && !player.admin) {
+                AntiGrief.sendMessage(players.get(id) + "[accent] left." + " id: " + id);
+            }
+        }
+    }
+
+    public void handleLeave(int id) {
+        if (players.containsKey(id)) {
+            var trace = antiGrief.tracer.get(id);
+            if (antiGrief.leaveMessages) {
+                AntiGrief.sendMessage(players.get(id) + "[accent] left." + ((antiGrief.autoTrace && trace != null) ? " uuid: " + trace.uuid + " ip: " + trace.ip : " id: " + id));
+            }
+            players.remove(id);
+        }
     }
 }

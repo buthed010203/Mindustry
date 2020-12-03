@@ -19,29 +19,24 @@ public class Commands {
         handler.register("eval", "<JavaScript...>", "evaluates javascript code, same as running stuff in f8", args -> {
              Core.app.post(() -> {
                  var output = mods.getScripts().runConsole("var me = Vars.player;" + Seq.with(args).toString(" "));
-                 if (output.length() >= maxTextLength) {
-                     Log.info("eval: " + output);
-                     player.sendMessage("[accent]Output exceeded max message size and was logged instead");
-                 } else {
-                    player.sendMessage("[lightgray]" + output);
-                 }
+                 AntiGrief.sendMessage("[lightgray]" + output);
              });
         });
 
         handler.register("clear", "Clears the chat", args -> {
-           ui.chatfrag.clearMessages();
+           if (!headless) ui.chatfrag.clearMessages();
         });
 
-        handler.register("info", "Gets antigrief info for tile below the cursor", args -> {
-            var infos = antiGrief.tileInfos.get(antiGrief.getCursorTile());
-            if (infos.size == 0) {
-                player.sendMessage("No info found");
-                return;
-            }
-            infos.forEach(info -> {
-                player.sendMessage(info.interaction.name() + " by " + info.player.name + ",[white] block was " + info.block.name);
-            });
-        });
+//        handler.register("info", "Gets antigrief info for tile below the cursor", args -> {
+//            var infos = antiGrief.tileInfos.get(antiGrief.getCursorTile());
+//            if (infos.size == 0) {
+//                player.sendMessage("No info found");
+//                return;
+//            }
+//            infos.forEach(info -> {
+//                player.sendMessage(info.interaction.name() + " by " + info.player.name + ",[white] block was " + info.block.name);
+//            });
+//        });
     }
 
     public boolean run(String command) {

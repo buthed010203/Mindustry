@@ -10,6 +10,7 @@ import mindustry.gen.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.world.blocks.distribution.*;
+import mindustry.world.blocks.logic.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.sandbox.*;
 
@@ -30,11 +31,11 @@ public class BlockHandler{
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
         if (lastInfo == null && tile.block() == Blocks.air && tile.build == null) { // Sandbox blocks seem to have issues
-//            Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged; sandbox=" + state.rules.infiniteResources);
+            // Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged; sandbox=" + state.rules.infiniteResources);
             return;
         }
 
-        var info = new TileInfo(tile.block() == Blocks.air ? lastInfo.block : tile.block(), tile.x, tile.y, tile.build == null ? lastInfo.rotation : tile.build.rotation, null, InteractionType.built, player);
+        var info = new TileInfo(tile.block() == Blocks.air ? lastInfo.block : tile.block(), tile.x, tile.y, tile.build == null ? lastInfo.rotation : tile.build.rotation, null, rotated ? InteractionType.rotated : InteractionType.built, player);
 
         if (info.block instanceof ConstructBlock) {
             info.block = ((ConstructBuild)tile.build).cblock == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).cblock;
@@ -48,6 +49,7 @@ public class BlockHandler{
             if (lastInfo.rotation != info.rotation) info.interaction = InteractionType.rotated;
         }
 
+        // dont add if it was the same as the last info
         if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id && lastInfo.rotation == info.rotation) return;
         antiGrief.tileInfos.add(info, tile);
     }
@@ -59,7 +61,7 @@ public class BlockHandler{
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
         if (lastInfo == null && tile.block() == Blocks.air && tile.build == null) { // Sandbox blocks seem to have issues
-//            Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged; sandbox=" + state.rules.infiniteResources);
+            // Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged; sandbox=" + state.rules.infiniteResources);
             return;
         }
 
@@ -73,6 +75,7 @@ public class BlockHandler{
             }
         }
 
+        // dont add if it was the same as the last info
         if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id) return;
         antiGrief.tileInfos.add(info, tile);
     }
@@ -83,9 +86,18 @@ public class BlockHandler{
         var info = new TileInfo(tile.block(), tile.x, tile.y, tile.build.rotation, config, InteractionType.configured, player);
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
+        // dont add if it was reconfiguring of the same block by the same player
         if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id) {
-            if (lastInfo.interaction == InteractionType.configured && (info.block instanceof PowerNode || info.block instanceof MassDriver)) return;
-            if (lastInfo.config == info.config) return;
+            if (lastInfo.interaction == InteractionType.configured && (info.block instanceof PowerNode || info.block instanceof MassDriver || info.block instanceof LogicBlock)) {
+                lastInfo.timestamp = info.timestamp;
+                return;
+            }
+
+            if (lastInfo.config == info.config) {
+                lastInfo.timestamp = info.timestamp;
+                return;
+            }
+
             if (lastInfo.interaction == InteractionType.configured && (info.block instanceof Sorter || info.block instanceof ItemSource || info.block instanceof LiquidSource)) {
                 lastInfo.timestamp = info.timestamp;
                 lastInfo.config = info.config;

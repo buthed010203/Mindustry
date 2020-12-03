@@ -2,6 +2,7 @@ package mindustry.antigrief;
 
 import arc.*;
 import arc.math.geom.*;
+import arc.util.*;
 import mindustry.core.*;
 import mindustry.world.*;
 
@@ -14,9 +15,9 @@ public class AntiGrief {
     public final TileInfos tileInfos = new TileInfos();
     public final TracePlayer tracer = new TracePlayer();
 
-    private boolean autoTrace;
-    private boolean joinMessages;
-    private boolean leaveMessages;
+    public boolean autoTrace;
+    public boolean joinMessages;
+    public boolean leaveMessages;
 
     public int maxInfosPerTile = 50;
     public int maxInfoInHud = 5;
@@ -42,10 +43,18 @@ public class AntiGrief {
 
     public void loadSettings() {
         autoTrace = Core.settings.getBool("antigrief.autoTrace", true);
-        joinMessages = Core.settings.getBool("antigrief.joinMessages", false);
+        joinMessages = Core.settings.getBool("antigrief.joinMessages", true);
         leaveMessages = Core.settings.getBool("antigrief.leaveMessages", true);
 
         maxInfosPerTile = Core.settings.getInt("antigrief.maxInfosPerTile", 50);
+    }
+
+    public static void sendMessage(String msg) {
+        if (headless) {
+            Log.info("[AntiGrief] " + msg);
+        } else {
+            ui.chatfrag.addMessage(msg, null);
+        }
     }
 
     public static Tile getCursorTile() {
