@@ -2,17 +2,18 @@ package mindustry.antigrief;
 
 import arc.*;
 import arc.util.*;
-import mindustry.antigrief.TileInfos.*;
-import mindustry.content.*;
+
 import mindustry.game.*;
 import mindustry.world.*;
 import mindustry.gen.*;
+import mindustry.content.*;
+import mindustry.antigrief.TileInfos.*;
 import mindustry.world.blocks.*;
-import mindustry.world.blocks.ConstructBlock.*;
-import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.logic.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.sandbox.*;
+import mindustry.world.blocks.ConstructBlock.*;
+import mindustry.world.blocks.distribution.*;
 
 import static mindustry.Vars.*;
 

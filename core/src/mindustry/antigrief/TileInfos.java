@@ -1,11 +1,21 @@
 package mindustry.antigrief;
 
 import arc.*;
-import arc.struct.*;
 import arc.util.*;
+import arc.struct.*;
+
+import mindustry.gen.*;
+import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.net.Administration.*;
+import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.world.blocks.distribution.*;
+import mindustry.world.blocks.experimental.*;
+import mindustry.world.blocks.logic.*;
+import mindustry.world.blocks.sandbox.*;
+import mindustry.world.blocks.units.*;
 
 import static mindustry.Vars.*;
 
@@ -90,6 +100,75 @@ public class TileInfos{
             this.player = player;
 
             timestamp = Time.millis();
+        }
+
+        public String toString() {
+            if (block == null) return "???";
+            StringBuilder str = new StringBuilder(player.name + "[white] " + interaction.name().replace("_", " ") + " " + Fonts.getUnicodeStr(block.name));
+
+            if (interaction == InteractionType.configured) {
+                if(block instanceof MessageBlock){
+                    if (config.equals("")) {
+                        str.append(" to empty");
+                    }
+                }else if(block instanceof SwitchBlock){
+                    if ((Boolean)config) {
+                        str.append(" to T");
+                    } else {
+                        str.append(" to F");
+                    }
+                }else if(block instanceof Sorter || block instanceof ItemSource || block instanceof LiquidSource){
+                    if (config != null){
+                        str.append(" to ").append(Fonts.getUnicodeStr(block instanceof LiquidSource ? ((Liquid)config).name : ((Item)config).name));
+                    }else{
+                        str.append(" to ").append("none");
+                    }
+                }else if(block instanceof CommandCenter){
+                    str.append(" to ");
+                    var command = (UnitCommand)config;
+                    if(command == UnitCommand.attack){
+                        str.append(Iconc.commandAttack);
+                    }else if(command == UnitCommand.rally){
+                        str.append(Iconc.commandRally);
+                    }else if(command == UnitCommand.idle) {
+                        str.append(Iconc.cancel);
+                    }
+                }else if(block instanceof UnitFactory){
+                    str.append(" to ");
+                    if((Integer)config != -1){
+                        str.append(Fonts.getUnicodeStr(((UnitFactory)block).plans.get((Integer)config).unit.name));
+                    }else{
+                        str.append("none");
+                    }
+                }else if(block instanceof BlockForge){
+                    str.append(" to ");
+                    if (config != null) {
+                        str.append(Fonts.getUnicodeStr(((Block)config).name));
+                    } else {
+                        str.append("none");
+                    }
+                }
+            }else if(interaction == InteractionType.rotated){
+                str.append(" to ");
+                if(rotation == 0){
+                    str.append(Iconc.right);
+                }else if(rotation == 1){
+                    str.append(Iconc.up);
+                }else if(rotation == 2){
+                    str.append(Iconc.left);
+                }else if(rotation == 3){
+                    str.append(Iconc.down);
+                }
+            }
+            return str.toString();
+        }
+
+        public String toString(boolean withTimestamp) {
+            var str = this.toString();
+            if (withTimestamp){
+                str = str + " " + AntiGrief.prettyTime(Time.millis() - timestamp) + " ago";
+            }
+            return str;
         }
     }
 

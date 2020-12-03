@@ -1,15 +1,15 @@
 package mindustry.antigrief;
 
 import arc.*;
-import arc.struct.*;
 import arc.util.*;
+import arc.struct.*;
 import arc.util.CommandHandler.*;
 
 import static mindustry.Vars.*;
 
 public class Commands {
     private final String prefix = "/";
-    private CommandHandler handler = new CommandHandler(prefix);
+    private final CommandHandler handler = new CommandHandler(prefix);
 
     public Commands() {
         this.register();
@@ -27,19 +27,34 @@ public class Commands {
            if (!headless) ui.chatfrag.clearMessages();
         });
 
-//        handler.register("info", "Gets antigrief info for tile below the cursor", args -> {
-//            var infos = antiGrief.tileInfos.get(antiGrief.getCursorTile());
-//            if (infos.size == 0) {
-//                player.sendMessage("No info found");
-//                return;
-//            }
-//            infos.forEach(info -> {
-//                player.sendMessage(info.interaction.name() + " by " + info.player.name + ",[white] block was " + info.block.name);
-//            });
-//        });
+        handler.register("info", "<x> <y>", "Gets antigrief info for a tile", args -> {
+            if (!Strings.canParseInt(args[0])) {
+                AntiGrief.sendMessage("x is not a number");
+                return;
+            }
+
+            if (!Strings.canParseInt(args[1])) {
+                AntiGrief.sendMessage("y is not a number");
+                return;
+            }
+
+            int x = Strings.parseInt(args[0]);
+            int y = Strings.parseInt(args[1]);
+
+            var infos = antiGrief.tileInfos.get(x, y);
+            if (infos.size == 0) {
+                AntiGrief.sendMessage("No info found");
+                return;
+            }
+
+            AntiGrief.sendMessage("Found " + infos.size + " interactions:");
+            infos.forEach(info -> {
+                AntiGrief.sendMessage(info.toString(true));
+            });
+        });
     }
 
-    public boolean run(String command) {
-        return handler.handleMessage(command).type == ResponseType.valid;
+    public ResponseType run(String command) {
+        return handler.handleMessage(command).type;
     }
 }

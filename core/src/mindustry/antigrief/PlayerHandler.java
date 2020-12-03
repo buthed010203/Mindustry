@@ -2,6 +2,7 @@ package mindustry.antigrief;
 
 import arc.*;
 import arc.struct.*;
+
 import mindustry.game.*;
 import mindustry.gen.*;
 

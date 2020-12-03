@@ -1,8 +1,9 @@
 package mindustry.antigrief;
 
 import arc.*;
-import arc.math.geom.*;
 import arc.util.*;
+import arc.math.geom.*;
+
 import mindustry.core.*;
 import mindustry.world.*;
 

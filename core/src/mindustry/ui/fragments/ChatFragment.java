@@ -11,6 +11,7 @@ import arc.scene.ui.Label.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.CommandHandler.*;
 import mindustry.*;
 import mindustry.gen.*;
 import mindustry.input.*;
@@ -179,7 +180,14 @@ public class ChatFragment extends Table{
 
         history.insert(1, message);
 
-        if(antiGrief.commands.run(message)) return;
+        var response = antiGrief.commands.run(message);
+        if (response == ResponseType.fewArguments || response == ResponseType.manyArguments) {
+            addMessage("Invalid usage", null);
+            return;
+        } else if (response == ResponseType.valid) {
+            return;
+        }
+
         Call.sendChatMessage(message);
     }
 

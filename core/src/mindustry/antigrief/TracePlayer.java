@@ -1,10 +1,10 @@
 package mindustry.antigrief;
 
 import arc.*;
+import arc.util.*;
 import arc.func.*;
 import arc.struct.*;
-import arc.util.*;
-import mindustry.*;
+
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.net.Administration.*;
@@ -31,23 +31,23 @@ public class TracePlayer{
         trace(player, null);
     }
 
-    public void trace(Player player, Cons<TraceInfo> onTrace) {
-        if(!Vars.player.admin || !antiGrief.autoTrace || player.admin) {
+    public void trace(Player playerToTrace, Cons<TraceInfo> onTrace) {
+        if(!player.admin || !antiGrief.autoTrace || playerToTrace.admin) {
             if (onTrace != null) onTrace.get(null);
             return;
         }
 
-        if (infos.containsKey(player.id)){
-            onTrace.get(infos.get(player.id));
+        if (infos.containsKey(playerToTrace.id)){
+            onTrace.get(infos.get(playerToTrace.id));
             return;
         }
 
-        if (!listeners.containsKey(player.id)) {
-            listeners.put(player.id, onTrace);
+        if (!listeners.containsKey(playerToTrace.id)) {
+            listeners.put(playerToTrace.id, onTrace);
         }
 
-        Call.adminRequest(player, AdminAction.trace);
-        Log.info("[AntiGrief] Requested trace info for " + player.name);
+        Call.adminRequest(playerToTrace, AdminAction.trace);
+        Log.info("[AntiGrief] Requested trace info for " + playerToTrace.name);
     }
 
     public boolean fire(Player player, TraceInfo info) {
