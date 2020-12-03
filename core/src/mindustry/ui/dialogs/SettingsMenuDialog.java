@@ -8,12 +8,12 @@ import arc.input.*;
 import arc.scene.*;
 import arc.scene.event.*;
 import arc.scene.ui.*;
-import arc.scene.ui.SettingsDialog.SettingsTable.*;
 import arc.scene.ui.TextButton.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
+import mindustry.*;
 import mindustry.content.*;
 import mindustry.content.TechTree.*;
 import mindustry.core.GameState.*;
@@ -36,6 +36,7 @@ public class SettingsMenuDialog extends SettingsDialog{
     private SettingsTable graphics;
     private SettingsTable game;
     private SettingsTable sound;
+    private SettingsTable antiGrief;
 
     private Table prefs;
     private Table menu;
@@ -75,6 +76,7 @@ public class SettingsMenuDialog extends SettingsDialog{
         game = new SettingsTable();
         graphics = new SettingsTable();
         sound = new SettingsTable();
+        antiGrief = new SettingsTable();
 
         prefs = new Table();
         prefs.top();
@@ -277,7 +279,9 @@ public class SettingsMenuDialog extends SettingsDialog{
         menu.row();
         menu.button("@settings.graphics", style, () -> visible(1));
         menu.row();
-        menu.button("@settings.sound", style, () -> visible(2));
+        menu.button("@settings.antiGrief", style, () -> visible(2));
+        menu.row();
+        menu.button("@settings.sound", style, () -> visible(3));
         menu.row();
         menu.button("@settings.language", style, ui.language::show);
         if(!mobile || Core.settings.getBool("keyboard")){
@@ -440,6 +444,29 @@ public class SettingsMenuDialog extends SettingsDialog{
         }
 
         graphics.checkPref("flow", true);
+
+        antiGrief.sliderPref("antigrief.maxInfosPerTile", bundle.get("settings.antigrief.maxInfosPerTile"), 50, 5, 100, 1, s -> { Vars.antiGrief.loadSettings(); return s + " changes"; });
+        antiGrief.sliderPref("antigrief.maxInfoInHud", bundle.get("settings.antigrief.maxInfoInHud"), 5, 3, 100, 1, s -> { Vars.antiGrief.loadSettings(); return s + " changes"; });
+        antiGrief.checkPref("antigrief.showHud", bundle.get("settings.antigrief.showHud"), Vars.antiGrief.showHud, val -> {
+            Vars.antiGrief.showHud = val;
+            Vars.antiGrief.saveSettings();
+        });
+        antiGrief.checkPref("antigrief.autoTrace", bundle.get("settings.antigrief.autoTrace"), Vars.antiGrief.autoTrace, val -> {
+            Vars.antiGrief.autoTrace = val;
+            Vars.antiGrief.saveSettings();
+        });
+        antiGrief.checkPref("antigrief.joinMessages", bundle.get("settings.antigrief.joinMessages"), Vars.antiGrief.joinMessages, val -> {
+            Vars.antiGrief.joinMessages = val;
+            Vars.antiGrief.saveSettings();
+        });
+        antiGrief.checkPref("antigrief.leaveMessages", bundle.get("settings.antigrief.leaveMessages"), Vars.antiGrief.leaveMessages, val -> {
+            Vars.antiGrief.leaveMessages = val;
+            Vars.antiGrief.saveSettings();
+        });
+        antiGrief.checkPref("antigrief.displayFullSizeBlocks", bundle.get("settings.antigrief.displayFullSizeBlocks"), Vars.antiGrief.displayFullSizeBlocks, val -> {
+            Vars.antiGrief.displayFullSizeBlocks = val;
+            Vars.antiGrief.saveSettings();
+        });
     }
 
     public void exportData(Fi file) throws IOException{
@@ -495,7 +522,7 @@ public class SettingsMenuDialog extends SettingsDialog{
 
     private void visible(int index){
         prefs.clearChildren();
-        prefs.add(new Table[]{game, graphics, sound}[index]);
+        prefs.add(new Table[]{game, graphics, antiGrief, sound}[index]);
     }
 
     @Override

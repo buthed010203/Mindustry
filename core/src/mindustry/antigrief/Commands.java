@@ -59,7 +59,7 @@ public class Commands {
             displayRemoved = !displayRemoved;
         });
 
-        handler.register("toggleRemoved", "Displays removed blocks", args -> {
+        handler.register("toggleRemoved", "Displays removed block s", args -> {
             AntiGrief.sendMessage("Displaying of removed blocks is set to " + !displayRemoved);
             displayRemoved = !displayRemoved;
         });

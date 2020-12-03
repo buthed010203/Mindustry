@@ -14,6 +14,7 @@ public class PlayerHandler{
 
     public PlayerHandler() {
         Events.on(EventType.WorldLoadEvent.class, e -> {
+            if (net.active()) Groups.player.each(p -> handleJoin(p.id));
             if (state.map.name().equals(lastMap) && net.active()) return;
             lastMap = state.map.name();
             players.clear();
