@@ -25,16 +25,23 @@ public class PlayerHandler{
         if (player != null) {
             players.put(id, player.name);
 
-            if(antiGrief.tracer.get(id) == null) {
-                antiGrief.tracer.trace(player, trace -> {
-                    if (trace != null && antiGrief.joinMessages) {
-                        AntiGrief.sendMessage(players.get(id) + "[accent] left." + " uuid: " + trace.uuid + " ip: " + trace.ip);
+            if (antiGrief.joinMessages){
+                var trace = antiGrief.tracer.get(id);
+                if(antiGrief.autoTrace && player.admin){
+                    if(trace == null){
+                        antiGrief.tracer.trace(player, t -> {
+                            if(t != null){
+                                AntiGrief.sendMessage(players.get(id) + "[accent] joined." + " uuid: " + t.uuid + " ip: " + t.ip);
+                            }else{
+                                AntiGrief.sendMessage(players.get(id) + "[accent] joined." + " id: " + id);
+                            }
+                        });
+                    }else{
+                        AntiGrief.sendMessage(players.get(id) + "[accent] joined." + " uuid: " + trace.uuid + " ip: " + trace.ip);
                     }
-                });
-            }
-
-            if (antiGrief.joinMessages && !antiGrief.autoTrace && !player.admin) {
-                AntiGrief.sendMessage(players.get(id) + "[accent] left." + " id: " + id);
+                }else{
+                    AntiGrief.sendMessage(players.get(id) + "[accent] joined." + " id: " + id);
+                }
             }
         }
     }

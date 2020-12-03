@@ -43,7 +43,7 @@ public class AntiGrief {
 
     public void loadSettings() {
         autoTrace = Core.settings.getBool("antigrief.autoTrace", true);
-        joinMessages = Core.settings.getBool("antigrief.joinMessages", true);
+        joinMessages = Core.settings.getBool("antigrief.joinMessages", false);
         leaveMessages = Core.settings.getBool("antigrief.leaveMessages", true);
 
         maxInfosPerTile = Core.settings.getInt("antigrief.maxInfosPerTile", 50);

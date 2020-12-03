@@ -32,7 +32,7 @@ public class TracePlayer{
     }
 
     public void trace(Player player, Cons<TraceInfo> onTrace) {
-        if(!Vars.player.admin && !antiGrief.autoTrace) {
+        if(!Vars.player.admin || !antiGrief.autoTrace || player.admin) {
             if (onTrace != null) onTrace.get(null);
             return;
         }
