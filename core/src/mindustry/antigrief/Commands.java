@@ -48,7 +48,6 @@ public class Commands {
                 AntiGrief.sendMessage("No info found");
                 return;
             }
-
             AntiGrief.sendMessage("Found " + infos.size + " interactions:");
             infos.forEach(info -> {
                 AntiGrief.sendMessage(info.toString(true));

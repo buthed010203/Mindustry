@@ -102,6 +102,7 @@ public class HudFragment extends Fragment{
             t.add(new InfoHud()).name("infohud").visible(() -> antiGrief.showHud && net.active());
             t.row();
             var minimapTable = new Table();
+            minimapTable.top();
             //minimap
             minimapTable.add(new Minimap()).name("minimap").visible(() -> Core.settings.getBool("minimap")).right();
             minimapTable.row().visible(() -> Core.settings.getBool("minimap"));
