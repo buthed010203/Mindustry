@@ -4,6 +4,9 @@ import arc.*;
 import arc.util.*;
 import arc.struct.*;
 import arc.util.CommandHandler.*;
+import mindustry.core.GameState.*;
+import mindustry.game.*;
+import mindustry.game.EventType.*;
 
 import static mindustry.Vars.*;
 
@@ -57,11 +60,19 @@ public class Commands {
         handler.register("toggleremoved", "Displays removed blocks", args -> {
             AntiGrief.sendMessage("Displaying of removed blocks is set to " + !displayRemoved);
             displayRemoved = !displayRemoved;
+            renderer.blocks.reRenderShadows();
         });
 
-        handler.register("toggleRemoved", "Displays removed block s", args -> {
-            AntiGrief.sendMessage("Displaying of removed blocks is set to " + !displayRemoved);
-            displayRemoved = !displayRemoved;
+//        handler.register("toggleRemoved", "Displays removed blocks", args -> {
+//            AntiGrief.sendMessage("Displaying of removed blocks is set to " + !displayRemoved);
+//            displayRemoved = !displayRemoved;
+//            renderer.blocks.reRenderShadows();
+//        });
+
+        Events.on(EventType.StateChangeEvent.class, e -> {
+            if (!((e.from == State.playing && e.to == State.paused) || (e.from == State.paused && e.to == State.playing))) {
+                displayRemoved = false;
+            }
         });
     }
 

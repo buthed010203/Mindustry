@@ -40,7 +40,9 @@ public class TileInfos{
 
     public void add(TileInfo info, int x, int y) {
         if (infos.get(y * width + x) == null) infos.put(y * width + x, new Seq<>());
-        if (infos.get(y * width + x).size > antiGrief.maxInfosPerTile) infos.get(y * width + x).remove(0);
+        while(infos.get(y * width + x).size > antiGrief.maxInfosPerTile) {
+            infos.get(y * width + x).remove(0);
+        }
         infos.get(y * width + x).add(info);
     }
 
@@ -83,7 +85,7 @@ public class TileInfos{
 
     public void displayRemoved(){
         if (!antiGrief.commands.displayRemoved) return;
-        brokenFade = Mathf.lerpDelta(brokenFade, 1f, 0.1f);
+        brokenFade = Mathf.lerpDelta(brokenFade, 1f, 0.06f);
 
         if(brokenFade > 0.001f){
             Seq<TileInfo> lastBroken = new Seq<>();
@@ -103,7 +105,7 @@ public class TileInfos{
                 var info = lastBroken.get(i);
                 if(!camera.bounds(Tmp.r1).grow(tilesize * 2f).overlaps(Tmp.r2.setSize(b.size * tilesize).setCenter(info.x * tilesize + b.offset, info.y * tilesize + b.offset))) continue;
 
-                Draw.alpha(0.33f * brokenFade);
+                Draw.alpha(0.5f * brokenFade);
                 Draw.mixcol(Color.white, 0.2f + Mathf.absin(Time.globalTime, 6f, 0.2f));
                 if (antiGrief.displayFullSizeBlocks) {
                     Draw.rect(b.icon(Cicon.full), info.x * tilesize + b.offset, info.y * tilesize + b.offset, b.rotate ? info.rotation * 90 : 0f);

@@ -14,6 +14,7 @@ import mindustry.game.Teams.*;
 import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.storage.*;
 
@@ -43,7 +44,6 @@ public class BlockRenderer implements Disposable{
     private boolean displayStatus = false;
 
     public BlockRenderer(){
-
         Events.on(ClientLoadEvent.class, e -> {
             cracks = new TextureRegion[maxCrackSize][crackRegions];
             for(int size = 1; size <= maxCrackSize; size++){
@@ -57,23 +57,7 @@ public class BlockRenderer implements Disposable{
             shadowEvents.clear();
             lastCamY = lastCamX = -99; //invalidate camera position so blocks get updated
 
-            shadows.getTexture().setFilter(TextureFilter.linear, TextureFilter.linear);
-            shadows.resize(world.width(), world.height());
-            shadows.begin();
-            Core.graphics.clear(Color.white);
-            Draw.proj().setOrtho(0, 0, shadows.getWidth(), shadows.getHeight());
-
-            Draw.color(shadowColor);
-
-            for(Tile tile : world.tiles){
-                if(tile.block().hasShadow){
-                    Fill.rect(tile.x + 0.5f, tile.y + 0.5f, 1, 1);
-                }
-            }
-
-            Draw.flush();
-            Draw.color();
-            shadows.end();
+            reRenderShadows();
 
             dark.getTexture().setFilter(TextureFilter.linear, TextureFilter.linear);
             dark.resize(world.width(), world.height());
@@ -109,6 +93,27 @@ public class BlockRenderer implements Disposable{
         });
     }
 
+    public void reRenderShadows() {
+        shadows.getTexture().setFilter(TextureFilter.linear, TextureFilter.linear);
+        shadows.resize(world.width(), world.height());
+        shadows.begin();
+        Core.graphics.clear(Color.white);
+        Draw.proj().setOrtho(0, 0, shadows.getWidth(), shadows.getHeight());
+
+        Draw.color(shadowColor);
+
+        for(Tile tile : world.tiles){
+            if (antiGrief.commands.displayRemoved && !(tile.block() instanceof CoreBlock || tile.block() instanceof StaticWall || tile.block() instanceof StaticTree)) continue;
+            if(tile.block().hasShadow){
+                Fill.rect(tile.x + 0.5f, tile.y + 0.5f, 1, 1);
+            }
+        }
+
+        Draw.flush();
+        Draw.color();
+        shadows.end();
+    }
+
     public void drawDarkness(){
         Draw.shader(Shaders.darkness);
         Draw.fbo(dark, world.width(), world.height(), tilesize);
@@ -138,8 +143,7 @@ public class BlockRenderer implements Disposable{
     }
 
     public void drawShadows(){
-        if(antiGrief.commands.displayRemoved) return;
-        if(!shadowEvents.isEmpty()){
+        if(!shadowEvents.isEmpty() && !antiGrief.commands.displayRemoved){
             Draw.flush();
 
             shadows.begin();
@@ -259,7 +263,7 @@ public class BlockRenderer implements Disposable{
             Tile tile = tileview.items[i];
             Block block = tile.block();
             Building entity = tile.build;
-            if (!(block instanceof CoreBlock) && antiGrief.commands.displayRemoved) continue;
+            if (antiGrief.commands.displayRemoved && !(tile.block() instanceof CoreBlock || tile.block() instanceof StaticWall || tile.block() instanceof StaticTree)) continue;
 
             Draw.z(Layer.block);
 
