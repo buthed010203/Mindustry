@@ -33,12 +33,12 @@ public class Commands {
 
         handler.register("info", "<x> <y>", "Gets antigrief info for a tile", args -> {
             if (!Strings.canParseInt(args[0])) {
-                AntiGrief.sendMessage("[#f5b041]x[#f8c471] is not a number");
+                AntiGrief.sendMessage("[#f5b041]x[#f8c471] is not a integer");
                 return;
             }
 
             if (!Strings.canParseInt(args[1])) {
-                AntiGrief.sendMessage("[#f5b041]y[#f8c471] is not a number");
+                AntiGrief.sendMessage("[#f5b041]y[#f8c471] is not a integer");
                 return;
             }
 
@@ -50,9 +50,9 @@ public class Commands {
                 AntiGrief.sendMessage("[#f5b041]No info found");
                 return;
             }
-            AntiGrief.sendMessage("Found " + infos.size + " interaction" + (infos.size == 1 ? "" : "s") + ":");
+            AntiGrief.sendMessage("[#85c1e9]Found [#82e0aa]" + infos.size + "[] interaction" + (infos.size == 1 ? "" : "s") + ":");
             infos.forEach(info -> {
-                AntiGrief.sendMessage(info.toString(true, false));
+                AntiGrief.sendMessage(info.toString(true, true));
             });
         });
 
@@ -65,8 +65,9 @@ public class Commands {
 //        });
 
         Events.on(EventType.StateChangeEvent.class, e -> {
-            if (!((e.from == State.playing && e.to == State.paused) || (e.from == State.paused && e.to == State.playing))) {
+            if (displayRemoved && !((e.from == State.playing && e.to == State.paused) || (e.from == State.paused && e.to == State.playing))) {
                 displayRemoved = false;
+                renderer.blocks.reRenderShadows();
             }
         });
     }

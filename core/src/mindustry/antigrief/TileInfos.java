@@ -40,7 +40,7 @@ public class TileInfos{
 
     public void add(TileInfo info, int x, int y) {
         if (infos.get(y * width + x) == null) infos.put(y * width + x, new Seq<>());
-        while(infos.get(y * width + x).size > antiGrief.maxInfosPerTile) {
+        while(infos.get(y * width + x).size >= antiGrief.maxInfosPerTile) {
             infos.get(y * width + x).remove(0);
         }
         infos.get(y * width + x).add(info);
@@ -145,7 +145,7 @@ public class TileInfos{
             if (block == null) return "???";
             StringBuilder str = new StringBuilder();
             str.append(player.name);
-            str.append(color ? "[#f8c471] " : "[white] ");
+            str.append(color ? "[#85c1e9] " : "[white] ");
             str.append(interaction.name().replace("_", " "));
             str.append("[white] ");
             str.append(Fonts.getUnicodeStr(block.name));
@@ -207,9 +207,10 @@ public class TileInfos{
             }
 
             if(withTimestamp) {
-                str.append(" ");
+                str.append(color ? " [#47c7ae]" : " [white]");
                 str.append(AntiGrief.prettyTime(Time.millis() - timestamp));
-                str.append(" ago");
+                str.append(color ? " [#85c1e9]" : " [white]");
+                str.append("ago");
             }
 
             return str.toString();

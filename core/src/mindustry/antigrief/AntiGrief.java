@@ -20,11 +20,11 @@ public class AntiGrief {
     public boolean joinMessages;
     public boolean leaveMessages;
 
-    public boolean displayFullSizeBlocks = false;
+    public boolean displayFullSizeBlocks;
 
-    public int maxInfosPerTile = 50;
-    public int maxInfoInHud = 5;
-    public boolean showHud = true;
+    public int maxInfosPerTile;
+    public int maxInfoInHud;
+    public boolean showHud;
 
     public AntiGrief() {
         commands = new Commands();
@@ -52,7 +52,7 @@ public class AntiGrief {
         joinMessages = Core.settings.getBool("antigrief.joinMessages", false);
         leaveMessages = Core.settings.getBool("antigrief.leaveMessages", true);
         showHud = Core.settings.getBool("antigrief.showHud", true);
-        displayFullSizeBlocks = Core.settings.getBool("antigrief.displayFullSizeBlocks", false);
+        displayFullSizeBlocks = Core.settings.getBool("antigrief.displayFullSizeBlocks", true);
 
         maxInfosPerTile = Core.settings.getInt("antigrief.maxInfosPerTile", 50);
         maxInfoInHud = Core.settings.getInt("antigrief.maxInfoInHud", 5);
