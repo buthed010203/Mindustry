@@ -255,7 +255,7 @@ public class BlockRenderer implements Disposable{
     }
 
     public void drawBlocks(){
-        antiGrief.tileInfos.displayRemoved();
+        antiGrief.tileInfos.drawDeconstructed();
         drawDestroyed();
 
         //draw most tile stuff

@@ -10,6 +10,7 @@ import arc.struct.*;
 import mindustry.gen.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
+import mindustry.graphics.*;
 import mindustry.net.Administration.*;
 import mindustry.type.*;
 import mindustry.ui.*;
@@ -25,7 +26,6 @@ import static mindustry.Vars.*;
 
 public class TileInfos{
     private final ObjectMap<Integer, Seq<TileInfo>> infos = new ObjectMap<>();
-    private float brokenFade = 0f;
     private int width;
 
     private String lastMapName;
@@ -83,38 +83,36 @@ public class TileInfos{
         infos.clear(width * height);
     }
 
-    public void displayRemoved(){
+    public void drawDeconstructed(){
         if (!antiGrief.commands.displayRemoved) return;
-        brokenFade = Mathf.lerpDelta(brokenFade, 1f, 0.06f);
 
-        if(brokenFade > 0.001f){
-            Seq<TileInfo> lastBroken = new Seq<>();
+        Seq<TileInfo> lastBroken = new Seq<>();
 
-            infos.each((loc, infos2) -> {
-                for(int i = infos2.size - 1; i >= 0; i--){
-                    if (infos2.get(i).interaction == InteractionType.removed || infos2.get(i).interaction == InteractionType.picked_up) {
-                        lastBroken.add(infos2.get(i));
-                        break;
-                    }
-                }
-            });
-
-            for(int i = 0; i < lastBroken.size; i++){
-                if (lastBroken.get(i).block == null) continue;
-                Block b = lastBroken.get(i).block;
-                var info = lastBroken.get(i);
-                if(!camera.bounds(Tmp.r1).grow(tilesize * 2f).overlaps(Tmp.r2.setSize(b.size * tilesize).setCenter(info.x * tilesize + b.offset, info.y * tilesize + b.offset))) continue;
-
-                Draw.alpha(0.5f * brokenFade);
-                Draw.mixcol(Color.white, 0.2f + Mathf.absin(Time.globalTime, 6f, 0.2f));
-                if (antiGrief.displayFullSizeBlocks) {
-                    Draw.rect(b.icon(Cicon.full), info.x * tilesize + b.offset, info.y * tilesize + b.offset, b.rotate ? info.rotation * 90 : 0f);
-                } else {
-                    Draw.rect(b.icon(Cicon.medium), info.x * tilesize, info.y * tilesize, b.rotate ? info.rotation * 90 : 0f);
+        infos.each((loc, infos2) -> {
+            for(int i = infos2.size - 1; i >= 0; i--){
+                if (infos2.get(i).interaction == InteractionType.removed || infos2.get(i).interaction == InteractionType.picked_up) {
+                    lastBroken.add(infos2.get(i));
+                    break;
                 }
             }
-            Draw.reset();
+        });
+
+        Draw.z(Layer.block);
+        for(int i = 0; i < lastBroken.size; i++){
+            if (lastBroken.get(i).block == null) continue;
+            Block b = lastBroken.get(i).block;
+            var info = lastBroken.get(i);
+            if(!camera.bounds(Tmp.r1).grow(tilesize * 2f).overlaps(Tmp.r2.setSize(b.size * tilesize).setCenter(info.x * tilesize + b.offset, info.y * tilesize + b.offset))) continue;
+
+            Draw.alpha(0.8f);
+            Draw.mixcol(Color.white, 0.2f + Mathf.absin(Time.globalTime, 6f, 0.2f));
+            if (antiGrief.displayFullSizeBlocks) {
+                Draw.rect(b.icon(Cicon.full), info.x * tilesize + b.offset, info.y * tilesize + b.offset, b.rotate ? info.rotation * 90 : 0f);
+            } else {
+                Draw.rect(b.icon(Cicon.medium), info.x * tilesize, info.y * tilesize, b.rotate ? info.rotation * 90 : 0f);
+            }
         }
+        Draw.reset();
     }
 
     static class TileInfo {

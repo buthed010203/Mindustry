@@ -6,7 +6,6 @@ import arc.struct.*;
 import arc.util.CommandHandler.*;
 import mindustry.core.GameState.*;
 import mindustry.game.*;
-import mindustry.game.EventType.*;
 
 import static mindustry.Vars.*;
 
