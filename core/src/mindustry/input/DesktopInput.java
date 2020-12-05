@@ -20,6 +20,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.antigrief.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.net;
@@ -575,6 +576,16 @@ public class DesktopInput extends InputHandler{
 
         if (Core.input.keyTap(Binding.display_deconstructed_blocks)) {
             antiGrief.commands.toggleDisplayRemoved();
+        }
+
+        if (Core.input.keyTap(Binding.increase_nth_deconstructed) && antiGrief.commands.displayRemoved) {
+            antiGrief.tileInfos.nthDeconstructed++;
+            AntiGrief.sendMessage("[#f8c471]Set nth deconstructed to [#f5b041]" + antiGrief.tileInfos.nthDeconstructed);
+        }
+
+        if (Core.input.keyTap(Binding.decrease_nth_deconstructed) && antiGrief.commands.displayRemoved) {
+            if (antiGrief.tileInfos.nthDeconstructed > 0) antiGrief.tileInfos.nthDeconstructed--;
+            AntiGrief.sendMessage("[#f8c471]Set nth deconstructed to [#f5b041]" + antiGrief.tileInfos.nthDeconstructed);
         }
     }
 

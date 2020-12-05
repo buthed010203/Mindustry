@@ -72,6 +72,8 @@ public enum Binding implements KeyBind{
     console(KeyCode.f8),
 
     display_deconstructed_blocks(KeyCode.h, "Anti Grief"),
+    increase_nth_deconstructed(KeyCode.y),
+    decrease_nth_deconstructed(KeyCode.n)
     ;
 
     private final KeybindValue defaultValue;

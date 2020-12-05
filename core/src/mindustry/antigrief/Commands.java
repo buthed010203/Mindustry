@@ -56,8 +56,17 @@ public class Commands {
             });
         });
 
-        handler.register("toggleremoved", "Displays removed blocks", args -> {
+        handler.register("toggleremoved", "Displays deconstructed blocks", args -> {
             toggleDisplayRemoved();
+        });
+
+        handler.register("nthremoved", "<num>", "Sets last nth deconstructed block", args -> {
+            if (!Strings.canParseInt(args[0])) {
+                AntiGrief.sendMessage("[#f5b041]num[#f8c471] is not a integer");
+                return;
+            }
+            var nth = antiGrief.tileInfos.nthDeconstructed = Strings.parseInt(args[0]);
+            AntiGrief.sendMessage("[#f8c471]Set nth deconstructed to [#f5b041]" + nth);
         });
 
 //        handler.register("toggleRemoved", "Displays removed blocks", args -> {
@@ -68,6 +77,7 @@ public class Commands {
             if (displayRemoved && !((e.from == State.playing && e.to == State.paused) || (e.from == State.paused && e.to == State.playing))) {
                 displayRemoved = false;
                 renderer.blocks.reRenderShadows();
+                antiGrief.tileInfos.nthDeconstructed = 0;
             }
         });
     }
@@ -79,6 +89,7 @@ public class Commands {
         }
 
         AntiGrief.sendMessage("[#f8c471]Displaying of removed blocks is set to [#f5b041] " + !displayRemoved);
+        antiGrief.tileInfos.nthDeconstructed = 0;
         displayRemoved = !displayRemoved;
         renderer.blocks.reRenderShadows();
     }

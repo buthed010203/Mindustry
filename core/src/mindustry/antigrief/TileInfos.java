@@ -30,6 +30,8 @@ public class TileInfos{
 
     private String lastMapName;
 
+    public int nthDeconstructed = 0;
+
     public TileInfos() {
         Events.on(WorldLoadEvent.class, e -> {
             if (state.map.name().equals(lastMapName)) return;
@@ -89,10 +91,15 @@ public class TileInfos{
         Seq<TileInfo> lastBroken = new Seq<>();
 
         infos.each((loc, infos2) -> {
+            var nth = nthDeconstructed;
             for(int i = infos2.size - 1; i >= 0; i--){
                 if (infos2.get(i).interaction == InteractionType.removed || infos2.get(i).interaction == InteractionType.picked_up) {
-                    lastBroken.add(infos2.get(i));
-                    break;
+                    if (nth != 0){
+                        nth--;
+                    } else {
+                        lastBroken.add(infos2.get(i));
+                        break;
+                    }
                 }
             }
         });
@@ -104,7 +111,7 @@ public class TileInfos{
             var info = lastBroken.get(i);
             if(!camera.bounds(Tmp.r1).grow(tilesize * 2f).overlaps(Tmp.r2.setSize(b.size * tilesize).setCenter(info.x * tilesize + b.offset, info.y * tilesize + b.offset))) continue;
 
-            Draw.alpha(0.8f);
+            Draw.alpha(0.95f);
             Draw.mixcol(Color.white, 0.2f + Mathf.absin(Time.globalTime, 6f, 0.2f));
             if (antiGrief.displayFullSizeBlocks) {
                 Draw.rect(b.icon(Cicon.full), info.x * tilesize + b.offset, info.y * tilesize + b.offset, b.rotate ? info.rotation * 90 : 0f);
