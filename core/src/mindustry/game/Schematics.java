@@ -68,13 +68,12 @@ public class Schematics implements Loadable{
             shadowBuffer.dispose();
             if(errorTexture != null){
                 errorTexture.dispose();
+                errorTexture = null;
             }
         });
 
         Events.on(ClientLoadEvent.class, event -> {
-            Pixmap pixmap = Core.atlas.getPixmap("error").crop();
-            errorTexture = new Texture(pixmap);
-            pixmap.dispose();
+            errorTexture = new Texture("sprites/error.png");
         });
     }
 
@@ -108,9 +107,6 @@ public class Schematics implements Loadable{
         if(shadowBuffer == null){
             Core.app.post(() -> shadowBuffer = new FrameBuffer(maxSchematicSize + padding + 8, maxSchematicSize + padding + 8));
         }
-
-        //load base schematics
-        bases.load();
     }
 
     private void loadLoadouts(){
@@ -130,12 +126,18 @@ public class Schematics implements Loadable{
         newSchematic.tags.putAll(target.tags);
         newSchematic.file = target.file;
 
+        loadouts.each((block, list) -> list.remove(target));
+        checkLoadout(target, true);
+
         try{
             write(newSchematic, target.file);
         }catch(Exception e){
+            Log.err("Failed to overwrite schematic '@' (@)", newSchematic.name(), target.file);
             Log.err(e);
             ui.showException(e);
         }
+
+
     }
 
     private @Nullable Schematic loadFile(Fi file){
@@ -153,6 +155,7 @@ public class Schematics implements Loadable{
 
             return s;
         }catch(Throwable e){
+            Log.err("Failed to read schematic from file '@'", file);
             Log.err(e);
         }
         return null;
@@ -188,6 +191,7 @@ public class Schematics implements Loadable{
         try{
             return getBuffer(schematic).getTexture();
         }catch(Throwable t){
+            Log.err("Failed to get preview for schematic '@' (@)", schematic.name(), schematic.file);
             Log.err(t);
             errored.add(schematic);
             return errorTexture;

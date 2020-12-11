@@ -27,6 +27,8 @@ import java.util.zip.*;
 import static mindustry.Vars.*;
 
 public class LogicBlock extends Block{
+    private static final int maxByteLen = 1024 * 500;
+
     public int maxInstructionScale = 5;
     public int instructionsPerTick = 1;
     public float range = 8 * 10;
@@ -36,6 +38,7 @@ public class LogicBlock extends Block{
         update = true;
         solid = true;
         configurable = true;
+        group = BlockGroup.logic;
 
         config(byte[].class, (LogicBuild build, byte[] data) -> build.readCompressed(data, true));
 
@@ -136,6 +139,9 @@ public class LogicBlock extends Block{
                 stream.read();
 
                 int bytelen = stream.readInt();
+
+                if(bytelen > maxByteLen) throw new RuntimeException("Malformed logic data! Length: " + bytelen);
+
                 byte[] bytes = new byte[bytelen];
                 stream.readFully(bytes);
 
@@ -147,7 +153,11 @@ public class LogicBlock extends Block{
                     String name = stream.readUTF();
                     short x = stream.readShort(), y = stream.readShort();
 
-                    transformer.get(Tmp.p1.set(x, y));
+                    Tmp.p2.set((int)(offset / (tilesize/2)), (int)(offset / (tilesize/2)));
+                    transformer.get(Tmp.p1.set(x * 2, y * 2).sub(Tmp.p2));
+                    Tmp.p1.add(Tmp.p2);
+                    Tmp.p1.x /= 2;
+                    Tmp.p1.y /= 2;
                     links.add(new LogicLink(Tmp.p1.x, Tmp.p1.y, name, true));
                 }
 
@@ -192,6 +202,7 @@ public class LogicBlock extends Block{
                 int version = stream.read();
 
                 int bytelen = stream.readInt();
+                if(bytelen > maxByteLen) throw new RuntimeException("Malformed logic data! Length: " + bytelen);
                 byte[] bytes = new byte[bytelen];
                 stream.readFully(bytes);
 
@@ -300,14 +311,17 @@ public class LogicBlock extends Block{
                         }
                     }
 
+                    asm.putConst("@mapw", world.width());
+                    asm.putConst("@maph", world.height());
                     asm.putConst("@links", executor.links.length);
                     asm.putConst("@ipt", instructionsPerTick);
 
                     //store any older variables
                     for(Var var : executor.vars){
-                        if(!var.constant){
+                        boolean unit = var.name.equals("@unit");
+                        if(!var.constant || unit){
                             BVar dest = asm.getVar(var.name);
-                            if(dest != null && !dest.constant){
+                            if(dest != null && (!dest.constant || unit)){
                                 dest.value = var.isobj ? var.objval : var.numval;
                             }
                         }
