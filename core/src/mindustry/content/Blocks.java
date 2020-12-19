@@ -983,15 +983,15 @@ public class Blocks implements ContentList{
         junction = new Junction("junction"){{
             requirements(Category.distribution, with(Items.copper, 2), true);
             speed = 26;
-            capacity = 12;
+            capacity = 6;
             health = 30;
             buildCostMultiplier = 6f;
         }};
 
         itemBridge = new BufferedItemBridge("bridge-conveyor"){{
-            requirements(Category.distribution, with(Items.lead, 4, Items.copper, 4));
+            requirements(Category.distribution, with(Items.lead, 6, Items.copper, 6));
             range = 4;
-            speed = 70f;
+            speed = 74f;
             bufferCapacity = 14;
         }};
 
@@ -1772,7 +1772,7 @@ public class Blocks implements ContentList{
 
             maxAmmo = 40;
             ammoPerShot = 4;
-            rotateSpeed = 2.5f;
+            rotateSpeed = 2f;
             reloadTime = 200f;
             ammoUseEffect = Fx.casing3Double;
             recoilAmount = 5f;
@@ -1785,7 +1785,7 @@ public class Blocks implements ContentList{
             shootSound = Sounds.railgun;
             unitSort = (u, x, y) -> -u.maxHealth;
 
-            coolantMultiplier = 0.2f;
+            coolantMultiplier = 0.4f;
 
             health = 150 * size * size;
             coolantUsage = 1f;

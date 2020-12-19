@@ -124,7 +124,7 @@ public class DesktopInput extends InputHandler{
                 drawArrow(sreq.block, sreq.x, sreq.y, sreq.rotation, valid);
             }
 
-            sreq.block.drawRequest(sreq, allRequests(), valid);
+            sreq.block.drawPlan(sreq, allRequests(), valid);
 
             drawSelected(sreq.x, sreq.y, sreq.block, getRequest(sreq.x, sreq.y, sreq.block.size, sreq) != null ? Pal.remove : Pal.accent);
         }
@@ -169,7 +169,6 @@ public class DesktopInput extends InputHandler{
                     block.drawRequestConfig(brequest, allRequests());
                     brequest.config = null;
                 }
-
             }
         }
 
