@@ -33,10 +33,11 @@ import static mindustry.Vars.net;
 import static mindustry.Vars.*;
 
 public class SettingsMenuDialog extends SettingsDialog{
-    private SettingsTable graphics;
-    private SettingsTable game;
-    private SettingsTable sound;
-    private SettingsTable antiGrief;
+    public SettingsTable graphics;
+    public SettingsTable game;
+    public SettingsTable sound;
+    public SettingsTable antiGrief;
+
 
     private Table prefs;
     private Table menu;

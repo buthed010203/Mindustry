@@ -384,6 +384,10 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
     //endregion
     //region handler methods
 
+    public boolean canUnload(){
+        return block.unloadable;
+    }
+
     /** Called when an unloader takes an item. */
     public void itemTaken(Item item){
 
@@ -1167,7 +1171,7 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
     /** Handle a bullet collision.
      * @return whether the bullet should be removed. */
     public boolean collision(Bullet other){
-        damage(other.damage() * other.type().tileDamageMultiplier);
+        damage(other.damage() * other.type().buildingDamageMultiplier);
 
         return true;
     }
