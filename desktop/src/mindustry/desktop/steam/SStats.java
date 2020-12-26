@@ -171,11 +171,11 @@ public class SStats implements SteamUserStatsCallback{
             }
         });
 
-        Events.on(UnitControlEvent.class, e -> {
-            if(e.unit instanceof BlockUnitc block && block.tile().block == Blocks.router){
-                becomeRouter.complete();
-            }
-        });
+//        Events.on(UnitControlEvent.class, e -> {
+//            if(e.unit instanceof BlockUnitc block && block.tile().block == Blocks.router){
+//                becomeRouter.complete();
+//            }
+//        });
 
         Events.on(SchematicCreateEvent.class, e -> {
             SStat.schematicsCreated.add();
