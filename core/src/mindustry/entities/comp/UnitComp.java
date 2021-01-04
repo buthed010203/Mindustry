@@ -109,6 +109,9 @@ abstract class UnitComp implements Healthc, Physicsc, Hitboxc, Statusc, Teamc, I
 
     @Replace
     public float clipSize(){
+        if(isBuilding()){
+            return state.rules.infiniteResources ? Float.MAX_VALUE : Math.max(type.clipSize, type.region.width) + buildingRange + tilesize*4f;
+        }
         return Math.max(type.region.width * 2f, type.clipSize);
     }
 
@@ -440,6 +443,15 @@ abstract class UnitComp implements Healthc, Physicsc, Hitboxc, Statusc, Teamc, I
         }
 
         remove();
+    }
+
+    /** @return name of direct or indirect player controller. */
+    @Override
+    public @Nullable String getControllerName(){
+        if(isPlayer()) return getPlayer().name;
+        if(controller instanceof LogicAI ai && ai.controller != null) return ai.controller.lastAccessed;
+        if(controller instanceof FormationAI ai && ai.leader != null && ai.leader.isPlayer()) return ai.leader.getPlayer().name;
+        return null;
     }
 
     @Override

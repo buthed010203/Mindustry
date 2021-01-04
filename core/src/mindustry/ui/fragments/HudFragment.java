@@ -70,7 +70,7 @@ public class HudFragment extends Fragment{
             }
         });
 
-        Events.on(SectorCaptureEvent.class, e ->{
+        Events.on(SectorCaptureEvent.class, e -> {
             showToast(Core.bundle.format("sector.captured", e.sector.isBeingPlayed() ? "" : e.sector.name() + " "));
         });
 
@@ -762,6 +762,20 @@ public class HudFragment extends Fragment{
 
             return builder;
         }).growX().pad(8f);
+
+        table.row();
+
+        var count = new float[]{-1};
+        table.table().update(t -> {
+            if(player.unit() instanceof Payloadc payload){
+                if(count[0] != payload.payloadUsed()){
+                    payload.contentInfo(t, 8 * 2, 275f);
+                    count[0] = payload.payloadUsed();
+                }
+            }else{
+                t.clear();
+            }
+        }).growX().visible(() -> player.unit() instanceof Payloadc p && p.payloadUsed() > 0).colspan(2);
 
         return table;
     }

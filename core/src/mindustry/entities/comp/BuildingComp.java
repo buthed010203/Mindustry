@@ -84,8 +84,7 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
         }else{
             if(block.hasPower){
                 //reinit power graph
-                power.graph = new PowerGraph();
-                power.graph.add(self());
+                new PowerGraph().add(self());
             }
         }
         this.rotation = rotation;
@@ -199,10 +198,13 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
     public void addPlan(boolean checkPrevious){
         if(!block.rebuildable || (team == state.rules.defaultTeam && state.isCampaign() && !block.isVisible())) return;
 
+        Object overrideConfig = null;
+
         if(self() instanceof ConstructBuild entity){
             //update block to reflect the fact that something was being constructed
             if(entity.cblock != null && entity.cblock.synthetic() && entity.wasConstructing){
                 block = entity.cblock;
+                overrideConfig = entity.lastConfig;
             }else{
                 //otherwise this was a deconstruction that was interrupted, don't want to rebuild that
                 return;
@@ -223,7 +225,7 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
             }
         }
 
-        data.blocks.addFirst(new BlockPlan(tile.x, tile.y, (short)rotation, block.id, config()));
+        data.blocks.addFirst(new BlockPlan(tile.x, tile.y, (short)rotation, block.id, overrideConfig == null ? config() : overrideConfig));
     }
 
     /** Configure with the current, local player. */
@@ -354,6 +356,10 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
         //disabled -> 0 efficiency
         if(!enabled) return 0;
         return power != null && (block.consumes.has(ConsumeType.power) && !block.consumes.getPower().buffered) ? power.status : 1f;
+    }
+
+    public BlockStatus status(){
+        return cons.status();
     }
 
     /** Call when nothing is happening to the entity. This increments the internal sleep timer. */
@@ -753,9 +759,7 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
     }
 
     public void powerGraphRemoved(){
-        if(power == null){
-            return;
-        }
+        if(power == null) return;
 
         power.graph.remove(self());
         for(int i = 0; i < power.links.size; i++){
@@ -812,7 +816,7 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
             Draw.z(Layer.power + 1);
             Draw.color(Pal.gray);
             Fill.square(brcx, brcy, 2.5f, 45);
-            Draw.color(cons.status().color);
+            Draw.color(status().color);
             Fill.square(brcx, brcy, 1.5f, 45);
             Draw.color();
         }

@@ -52,6 +52,7 @@ public class UnitType extends UnlockableContent{
     public float groundLayer = Layer.groundUnit;
     public float payloadCapacity = 8;
     public float aimDst = -1f;
+    public float buildBeamOffset = 3.8f;
     public int commandLimit = 8;
     public float visualElevation = -1f;
     public boolean allowLegStep = false;
@@ -169,6 +170,23 @@ public class UnitType extends UnlockableContent{
             if(state.rules.unitAmmo){
                 bars.add(new Bar(ammoType.icon + " " + Core.bundle.get("stat.ammo"), ammoType.barColor, () -> unit.ammo / ammoCapacity));
                 bars.row();
+            }
+
+            for(Ability ability : unit.abilities){
+                ability.displayBars(unit, bars);
+            }
+
+            if(unit instanceof Payloadc payload){
+                bars.add(new Bar("stat.payloadcapacity", Pal.items, () -> payload.payloadUsed() / unit.type().payloadCapacity));
+                bars.row();
+
+                var count = new float[]{-1};
+                bars.table().update(t -> {
+                    if(count[0] != payload.payloadUsed()) {
+                        payload.contentInfo(t, 8 * 2, 270);
+                        count[0] = payload.payloadUsed();
+                    }
+                }).growX().left();
             }
         }).growX();
 
