@@ -76,6 +76,7 @@ public class Build{
                 tile.build.lastAccessed = unit.getPlayer().name;
                 antiGrief.blockHandler.blockBuilt(unit, tile, true);
             }
+            Fx.rotateBlock.at(tile.build.x, tile.build.y, tile.build.block.size);
             return;
         }
 
