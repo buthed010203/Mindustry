@@ -74,7 +74,6 @@ public class MenuFragment extends Fragment{
             }));
         }
 
-        String versionText = ((Version.build == -1) ? "[#fc8140aa]" : "[#ffffffba]") + Version.combined();
         parent.fill((x, y, w, h) -> {
             TextureRegion logo = Core.atlas.find("logo");
             float width = Core.graphics.getWidth(), height = Core.graphics.getHeight() - Core.scene.marginTop;
@@ -89,7 +88,7 @@ public class MenuFragment extends Fragment{
             Draw.rect(logo, fx, fy, logow, logoh);
 
             Fonts.def.setColor(Color.white);
-            Fonts.def.draw(versionText, fx, fy - logoh/2f, Align.center);
+            Fonts.def.draw(Version.combined(true), fx, fy - logoh/2f, Align.center);
         }).touchable = Touchable.disabled;
     }
 
