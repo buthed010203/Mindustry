@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Update master branch"
-      - uses: tgymnich/fork-sync@v1.3
+        uses: tgymnich/fork-sync@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: Anuken
@@ -18,7 +18,7 @@ jobs:
           head: master
           merge_method: rebase
       - name: "Update me-things branch"
-      - uses: tgymnich/fork-sync@v1.3
+        uses: tgymnich/fork-sync@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: Anuken
