@@ -20,6 +20,8 @@ jobs:
           upstream_branch: master
           target_branch: master
           git_pull_args: --ff-only
+      - name: "."
+        run: git remote remove upstream
       - name: "Checkout me-things"
         uses: actions/checkout@v2
         with:
