@@ -1,0 +1,22 @@
+name: Repo Updater
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update Repo
+        run: |
+          git checkout master
+          UpstreamCommit=$(curl --silent https://api.github.com/repos/Anuken/Mindustry/commits/master | grep -Po '"sha": "\K.*?(?=")' | head -n1)
+          CurrentCommit=$(git rev-parse HEAD)
+          if [[ ${UpstreamCommit} == ${CurrentCommit} ]]; then echo "Already Up-to-date"; exit 1; done;
+          git add remote upstream https://github.com/Anuken/Mindustry.git
+          git fetch upstream
+          git rebase upstream/master
+          git push
+          git checkout me-things
+          git merge master
+          git push
