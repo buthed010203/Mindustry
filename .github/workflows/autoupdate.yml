@@ -14,7 +14,7 @@ jobs:
           git checkout master
           UpstreamCommit=$(curl --silent https://api.github.com/repos/Anuken/Mindustry/commits/master | grep -Po '"sha": "\K.*?(?=")' | head -n1)
           CurrentCommit=$(git rev-parse HEAD)
-          if [[ ${UpstreamCommit} == ${CurrentCommit} ]]; then echo "Already Up-to-date"; exit 1; done;
+          if [[ ${UpstreamCommit} == ${CurrentCommit} ]]; then; echo "Already Up-to-date"; exit 1; fi;
           git add remote upstream https://github.com/Anuken/Mindustry.git
           git fetch upstream
           git rebase upstream/master
