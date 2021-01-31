@@ -1,6 +1,5 @@
 name: Update BE
-on:
-  workflow_dispatch:
+on: [workflow_dispatch]
 
 jobs:
   updater:
@@ -8,18 +7,17 @@ jobs:
     steps:
       - name: Fetch Versions
       - run: |
-          - echo "anukeBE=$(curl --silent "https://api.github.com/repos/Anuken/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')" >> $GITHUB_ENV
-          - echo "agBE=$(curl --silent "https://api.github.com/repos/Blockilla101/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')" >> $GITHUB_ENV
+          echo "anukeBE=$(curl --silent "https://api.github.com/repos/Anuken/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')" >> $GITHUB_ENV
+          echo "agBE=$(curl --silent "https://api.github.com/repos/Blockilla101/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')" >> $GITHUB_ENV
       - name: Update Repo
+      - uses: actions/checkout@v2
         if: ${{ env.anukeBE != env.agBE }}
-        - uses: actions/checkout@v2
-        - name: Commit Update
-          run: |
-            - git add remote upstream git@github.com:Anuken/Mindustry.git
-            - git fetch upstream
-            - git checkout master
-            - git rebase upstream/master
-            - git push
-            - git checkout me-things
-            - git merge master
-            - git push
+        run: |
+          git add remote upstream git@github.com:Anuken/Mindustry.git
+          git fetch upstream
+          git checkout master
+          git rebase upstream/master
+          git push
+          git checkout me-things
+          git merge master
+          git push
