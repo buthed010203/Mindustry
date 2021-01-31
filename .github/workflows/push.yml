@@ -22,4 +22,4 @@ jobs:
         BNUM=$(curl --silent "https://api.github.com/repos/Anuken/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
         git tag ${BNUM}
         git config --global user.name "Build Uploader"
-        git push https://Anuken:${{ secrets.API_TOKEN_GITHUB }}@github.com/Anuken/MindustryBuilds ${BNUM}
+        git push https://Blockzilla101:${{ secrets.API_TOKEN_GITHUB }}@github.com/Blockzilla101/MindustryBuilds ${BNUM}
