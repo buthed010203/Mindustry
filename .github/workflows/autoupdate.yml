@@ -17,7 +17,5 @@ jobs:
           git fetch upstream
           git checkout master
           git rebase upstream/master
-#          git push
           git checkout me-things
           git merge master
-#          git push
