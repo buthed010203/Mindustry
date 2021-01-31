@@ -19,8 +19,7 @@ jobs:
       run: |
         git clone --depth=1 --branch=master https://github.com/Blockzilla101/MindustryBuilds ../MindustryBuilds
         cd ../MindustryBuilds
-        BNUM=$(curl --silent "https://api.github.com/repos/Anuken/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
-        if git rev-parse ${BNUM} &> /dev/null; then git push https://Blockzilla101:${{ secrets.API_TOKEN_GITHUB }}@github.com/Blockzilla101/MindustryBuilds --delete ${BNUM}; git tag --delete ${BNUM}; fi
+        BNUM=$(($GITHUB_RUN_NUMBER + 20700))
         git tag ${BNUM}
         git config --global user.name "Build Uploader"
         git push https://Blockzilla101:${{ secrets.API_TOKEN_GITHUB }}@github.com/Blockzilla101/MindustryBuilds ${BNUM}
