@@ -23,6 +23,7 @@ jobs:
       run: |
         git clone --depth=1 --branch=master https://github.com/Blockzilla101/MindustryBuilds ../MindustryBuilds
         cd ../MindustryBuilds
+        echo version ${GITHUB_RUN_NUMBER}
         git tag ${GITHUB_RUN_NUMBER}
         git config --global user.name "Build Uploader"
         git push https://Blockzilla101:${{ secrets.API_TOKEN_GITHUB }}@github.com/Blockzilla101/MindustryBuilds ${GITHUB_RUN_NUMBER}
