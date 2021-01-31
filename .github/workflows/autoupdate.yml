@@ -14,21 +14,37 @@ jobs:
         with:
           ref: master
       - name: "Update master branch"
-        uses: aormsby/Fork-Sync-With-Upstream-action@v2.1
-        with:
-          upstream_repository: Anuken/Mindustry
-          upstream_branch: master
-          target_branch: master
-          git_pull_args: --ff-only
-      - name: "."
-        run: git remote remove upstream
+        run: |
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email "{{ github.actor }}@users.noreply.github.com"
+          git remote show upstream &> /dev/null || git remote add upstream "https://github.com/Anuken/Mindustry.git"
+          if [ $(git branch --show-current) != "master" ]; then
+            git checkout master
+            echo "Checkedout master branch"
+          fi
+          git fetch upstream master
+          localhash=$(git rev-parse master)
+          upstreamhash=$(git rev-parse upstream/master)
+          if [ "${localhash}" != "${upstreamhash}" ]; then
+            echo "Found new commits"
+            git log upstream/master ${localhash}..HEAD --pretty=oneline
+            echo "Updating"
+            git pull --no-edit --ff-only upstream master
+            git push orign master
+          else
+            echo "No new commits found"
+          fi
       - name: "Checkout me-things"
         uses: actions/checkout@v2
         with:
-          ref: me-things
+          ref:
+            me-things
+            master
       - name: "Update me-things branch"
-        uses: aormsby/Fork-Sync-With-Upstream-action@v2.1
-        with:
-          upstream_repository: Blockzilla101/Mindustry
-          upstream_branch: master
-          target_branch: me-things
+        run: |
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email "{{ github.actor }}@users.noreply.github.com"
+          git checkout me-things
+          git merge master
+          git push origin me-things
+        
