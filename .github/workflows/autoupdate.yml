@@ -11,7 +11,7 @@ jobs:
           - echo "anukeBE=$(curl --silent "https://api.github.com/repos/Anuken/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')" >> $GITHUB_ENV
           - echo "agBE=$(curl --silent "https://api.github.com/repos/Blockilla101/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')" >> $GITHUB_ENV
       - name: Update Repo
-        if: env.anukeBE != env.agBE
+        if: ${{ env.anukeBE != env.agBE }}
         - uses: actions/checkout@v2
         - name: Commit Update
           run: |
