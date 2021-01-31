@@ -3,15 +3,27 @@ name: Update Repo
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/30 * * * *'
 
 jobs:
-  sync:
+  update:
     runs-on: ubuntu-latest
     steps:
+      - name: "Update master branch"
       - uses: tgymnich/fork-sync@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: Anuken
           base: master
           head: master
+          merge_method: rebase
+      - name: "Update me-things branch"
+      - uses: tgymnich/fork-sync@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: Anuken
+          base: master
+          head: me-things
+          merge_method: merge
+      
+          
