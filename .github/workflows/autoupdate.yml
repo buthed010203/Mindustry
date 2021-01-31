@@ -27,6 +27,6 @@ jobs:
       - name: "Update me-things branch"
         uses: aormsby/Fork-Sync-With-Upstream-action@v2.1
         with:
-          upstream_repository: Blockzilla101/Mindustry
+          upstream_repository: Anuken/Mindustry
           upstream_branch: master
-          target_branch: me-things    
+          target_branch: me-things
