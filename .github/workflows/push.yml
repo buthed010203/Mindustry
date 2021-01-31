@@ -15,9 +15,9 @@ jobs:
     - name: Run unit tests
       run: ./gradlew clean cleanTest test
     - name: Trigger BE build
-      if: ${{ github.repository == 'Anuken/Mindustry' }}
+      if: ${{ github.repository == 'Blockzilla101/Mindustry' }}
       run: |
-        git clone --depth=1 --branch=master https://github.com/Anuken/MindustryBuilds ../MindustryBuilds
+        git clone --depth=1 --branch=master https://github.com/Blockzilla101/MindustryBuilds ../MindustryBuilds
         cd ../MindustryBuilds
         BNUM=$(($GITHUB_RUN_NUMBER + 20000))
         git tag ${BNUM}
