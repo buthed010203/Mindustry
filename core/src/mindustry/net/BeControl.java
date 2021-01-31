@@ -65,7 +65,7 @@ public class BeControl{
             if(res.getStatus() == HttpStatus.OK){
                 Jval val = Jval.read(res.getResultAsString());
                 int newBuild = Strings.parseInt(val.getString("tag_name", "0"));
-                if(newBuild > Version.build){
+                if(newBuild > Version.antigriefVersion){
                     Jval asset = val.get("assets").asArray().find(v -> v.getString("name", "").startsWith(headless ? "Mindustry-BE-Server" : "Mindustry-BE-Desktop"));
                     String url = asset.getString("browser_download_url", "");
                     updateAvailable = true;
@@ -100,7 +100,7 @@ public class BeControl{
                     boolean[] cancel = {false};
                     float[] progress = {0};
                     int[] length = {0};
-                    Fi file = bebuildDirectory.child("client-be-" + updateBuild + ".jar");
+                    Fi file = bebuildDirectory.child("antigrief-client-be-" + updateBuild + ".jar");
                     Fi fileDest = System.getProperties().contains("becopy") ?
                         Fi.get(System.getProperty("becopy")) :
                         Fi.get(BeControl.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
@@ -140,7 +140,7 @@ public class BeControl{
                 try{
                     //download new file from github
                     Fi source = Fi.get(BeControl.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-                    Fi dest = source.sibling("server-be-" + updateBuild + ".jar");
+                    Fi dest = source.sibling("antigrief-server-be-" + updateBuild + ".jar");
 
                     download(updateUrl, dest,
                     len -> Core.app.post(() -> Log.info("&ly| Size: @ MB.", Strings.fixed((float)len / 1024 / 1024, 2))),

@@ -21,6 +21,8 @@ public class Version{
     /** Whether version loading is enabled. */
     public static boolean enabled = true;
 
+    public static int antigriefVersion = -1;
+
     public static void init(){
         if(!enabled) return;
 
@@ -32,6 +34,9 @@ public class Version{
         type = map.get("type");
         number = Integer.parseInt(map.get("number", "4"));
         modifier = map.get("modifier");
+
+        antigriefVersion = Strings.canParseInt(map.get("antigriefVersion")) ? Strings.parseInt(map.get("antigriefVersion")) : -1;
+
         if(map.get("build").contains(".")){
             String[] split = map.get("build").split("\\.");
             try{
