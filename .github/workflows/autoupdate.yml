@@ -39,7 +39,6 @@ jobs:
         with:
           ref:
             me-things
-            master
       - name: "Update me-things branch"
         run: |
           git config --global user.name ${{ github.actor }}
