@@ -5,19 +5,19 @@ jobs:
   updater:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Fetch Versions
       - run: |
           echo "anukeBE=$(curl --silent "https://api.github.com/repos/Anuken/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')" >> $GITHUB_ENV
           echo "agBE=$(curl --silent "https://api.github.com/repos/Blockilla101/MindustryBuilds/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')" >> $GITHUB_ENV
       - name: Update Repo
-      - uses: actions/checkout@v2
         if: ${{ env.anukeBE != env.agBE }}
         run: |
           git add remote upstream git@github.com:Anuken/Mindustry.git
           git fetch upstream
           git checkout master
           git rebase upstream/master
-          git push
+#          git push
           git checkout me-things
           git merge master
-          git push
+#          git push
