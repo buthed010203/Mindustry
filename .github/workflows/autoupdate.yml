@@ -22,8 +22,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: Anuken
-          base: master
-          head: me-things
+          base: me-things
+          head: master
           merge_method: merge
       
           
