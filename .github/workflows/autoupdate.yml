@@ -3,27 +3,30 @@ name: Update Repo
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      - name: "Checkout master"
+        uses: actions/checkout@v2
+        with:
+          ref: master
       - name: "Update master branch"
-        uses: tgymnich/fork-sync@v1.3
+        uses: aormsby/Fork-Sync-With-Upstream-action@v2.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          owner: Anuken
-          base: master
-          head: master
-          merge_method: rebase
+          upstream_repository: Anuken/Mindustry
+          upstream_branch: master
+          target_branch: master
+          git_pull_args: --ff-only
+      - name: "Checkout me-things"
+        uses: actions/checkout@v2
+        with:
+          ref: me-things
       - name: "Update me-things branch"
-        uses: tgymnich/fork-sync@v1.3
+        uses: aormsby/Fork-Sync-With-Upstream-action@v2.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          owner: Anuken
-          base: me-things
-          head: master
-          merge_method: merge
-      
-          
+          upstream_repository: Blockzilla101/Mindustry
+          upstream_branch: master
+          target_branch: me-things    
