@@ -21,9 +21,6 @@ public class Version{
     /** Whether version loading is enabled. */
     public static boolean enabled = true;
 
-    public static int antigriefBuild = 0;
-    public static int antigriefRevision = 0;
-
     public static void init(){
         if(!enabled) return;
 
@@ -47,19 +44,6 @@ public class Version{
         }else{
             build = Strings.canParseInt(map.get("build")) ? Integer.parseInt(map.get("build")) : -1;
         }
-
-        if(map.get("agBuild").contains(".")){
-            String[] split = map.get("agBuild").split("\\.");
-            try{
-                antigriefBuild = Integer.parseInt(split[0]);
-                antigriefRevision = Integer.parseInt(split[1]);
-            }catch(Throwable e){
-                e.printStackTrace();
-                antigriefBuild = -1;
-            }
-        }else{
-            antigriefBuild = Strings.canParseInt(map.get("agBuild")) ? Integer.parseInt(map.get("agBuild")) : -1;
-        }
     }
 
     /** @return whether the version is greater than the specified version string, e.g. "120.1"*/
@@ -81,12 +65,9 @@ public class Version{
 
     /** get menu version without colors */
     public static String combined(){
-        return combined(false);
-    }
-
-    public static String combined(boolean colors){
-        var mindustryVersion = (colors ? "[#ffffffba]" : "") + "mindustry " + (build == -1 ? ((colors ? "[#fc8140aa]" : "") + "custom build") : ((colors ? "[#ffffffba]" : "") + ((type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision))));
-        var agVersion = (colors ? "[#ffffffba]" : "") + "antigrief " + (antigriefBuild == -1 ? ((colors ? "[#fc8140aa]" : "") + "custom") : ((colors ? "[#ffffffba]" : "") + (antigriefRevision == 0 ? antigriefBuild : antigriefBuild + "." + antigriefRevision)));
-        return mindustryVersion + "\n" + agVersion;
+        if(build == -1){
+            return "custom build";
+        }
+        return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision);
     }
 }
