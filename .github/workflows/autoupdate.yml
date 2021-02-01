@@ -37,8 +37,8 @@ jobs:
       - name: "Checkout me-things"
         if: ${{ env.foundCommits }} == "yes"
         run: |
-          git clone https://github.com/Blockzilla101/Mindustry.git ../Mindustry --single-branch --branch=me-things --no-tags
-          cd ../Mindustry
+          git clone https://github.com/Blockzilla101/Mindustry.git ../me-things --single-branch --branch=me-things --no-tags
+          cd ../me-things
       - name: "Update me-things branch"
         if: ${{ env.foundCommits }} == "yes"
         run: |
