@@ -34,14 +34,11 @@ jobs:
             echo "foundCommits=no" >> $GITHUB_ENV
             echo "No new commits found"
           fi
-      - name: "Checkout me-things"
+      - name: "Update me-things branch"
         if: env.foundCommits == 'yes'
         run: |
           git clone https://github.com/Blockzilla101/Mindustry.git ../me-things --single-branch --branch=me-things --no-tags
           cd ../me-things
-      - name: "Update me-things branch"
-        if: env.foundCommits == 'yes'
-        run: |
           git remote add upstream https://github.com/Anuken/Mindustry.git
           git fetch upstream
           git pull --no-edit upstream master
