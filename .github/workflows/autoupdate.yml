@@ -30,7 +30,7 @@ jobs:
             git log upstream/master ${localhash}..HEAD --pretty=oneline
             echo "Updating"
             git pull --no-edit --ff-only upstream master
-            git push orign master
+            git push origin master
             echo "foundCommits=yes" >> $GITHUB_ENV
           else
             echo "foundCommits=no" >> $GITHUB_ENV
