@@ -31,7 +31,9 @@ jobs:
             echo "Updating"
             git pull --no-edit --ff-only upstream master
             git push orign master
+            echo "foundCommits=yes" >> $GITHUB_ENV
           else
+            echo "foundCommits=no" >> $GITHUB_ENV
             echo "No new commits found"
           fi
       - name: "Checkout me-things"
@@ -41,10 +43,12 @@ jobs:
             me-things
       - name: "Update me-things branch"
         run: |
-          git config --global user.name ${{ github.actor }}
-          git config --global user.email "{{ github.actor }}@users.noreply.github.com"
-          git checkout me-things
-          git fetch origin
-          git merge origin/master
-          git push origin me-things
-        
+          if [[ "${{ env.foundCommits }}" == "yes" ]]; then
+            git config --global user.name ${{ github.actor }}
+            git config --global user.email "{{ github.actor }}@users.noreply.github.com"
+            git checkout me-things
+            git pull --no-edit upstream master
+            git push origin me-things
+          else
+            echo "Last step didnt find any new commits"
+          fi
