@@ -42,4 +42,5 @@ jobs:
           git remote add upstream https://github.com/Anuken/Mindustry.git
           git fetch upstream
           git pull --no-edit upstream master
+          git config --global user.name "Repo Updater"
           git push https://Blockzilla101:${{ secrets.GIT_PUSH_TOKEN }}@github.com/Blockzilla101/Mindustry me-things
