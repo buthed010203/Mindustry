@@ -37,10 +37,10 @@ jobs:
       - name: "Update me-things branch"
         if: env.foundCommits == 'yes'
         run: |
+          git config --global user.name "Repo Updater"
           git clone https://github.com/Blockzilla101/Mindustry.git ../me-things --single-branch --branch=me-things --no-tags
           cd ../me-things
           git remote add upstream https://github.com/Anuken/Mindustry.git
           git fetch upstream
           git pull --no-edit upstream master
-          git config --global user.name "Repo Updater"
           git push https://Blockzilla101:${{ secrets.GIT_PUSH_TOKEN }}@github.com/Blockzilla101/Mindustry me-things
