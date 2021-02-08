@@ -154,7 +154,7 @@ public class ModsDialog extends BaseDialog{
 
                     }
                 });
-            }, error -> Core.app.post(() -> ui.showException(error)));
+            }, error -> Core.app.post(() -> modError(error)));
         }else{
             listener.get(modList);
         }
