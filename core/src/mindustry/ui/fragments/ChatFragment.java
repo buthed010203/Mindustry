@@ -16,7 +16,6 @@ import arc.util.CommandHandler.*;
 import mindustry.*;
 import mindustry.gen.*;
 import mindustry.input.*;
-import mindustry.type.*;
 import mindustry.ui.*;
 
 import static arc.Core.*;
@@ -218,7 +217,7 @@ public class ChatFragment extends Table{
             }
         }else{
             //sending chat has a delay; workaround for issue #1943
-            Time.run(2f, () ->{
+            Time.runTask(2f, () ->{
                 scene.setKeyboardFocus(null);
                 shown = false;
                 scrollPos = 0;
