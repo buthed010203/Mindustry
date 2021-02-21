@@ -964,6 +964,12 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
 
         if(block.configurations.containsKey(type)){
             block.configurations.get(type).get(this, value);
+        }else if(value instanceof Building build){
+            //copy config of another building
+            var conf = build.config();
+            if(conf != null && !(conf instanceof Building)){
+                configured(builder, conf);
+            }
         }
     }
 
