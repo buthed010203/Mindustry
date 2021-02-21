@@ -27,9 +27,10 @@ public enum LAccess{
     y,
     shootX,
     shootY,
-    //dead, //TODO 126
+    dead,
     range, 
     shooting,
+    boosting,
     mineX,
     mineY,
     mining,
@@ -42,6 +43,7 @@ public enum LAccess{
     config,
     payloadCount,
     payloadType,
+    controller,
 
     //values with parameters are considered controllable
     enabled("to"), //"to" is standard for single parameter access
