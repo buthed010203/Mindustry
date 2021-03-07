@@ -1380,7 +1380,7 @@ public class Blocks implements ContentList{
 
         unloader = new Unloader("unloader"){{
             requirements(Category.effect, with(Items.titanium, 25, Items.silicon, 30));
-            speed = 6f;
+            speed = 4.8f; //consistent with speed of titanium conveyor (12.5 items a second)
             group = BlockGroup.transportation;
         }};
 
