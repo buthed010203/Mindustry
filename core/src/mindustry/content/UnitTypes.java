@@ -292,7 +292,7 @@ public class UnitTypes implements ContentList{
                 shootSound = Sounds.lasershoot;
 
                 bullet = new LaserBoltBulletType(5.2f, 14){{
-                    lifetime = 37f;
+                    lifetime = 32f;
                     healPercent = 5f;
                     collidesTeam = true;
                     backColor = Pal.heal;
@@ -309,6 +309,7 @@ public class UnitTypes implements ContentList{
             health = 320f;
             buildSpeed = 0.9f;
             armor = 4f;
+            riseSpeed = 0.07f;
 
             mineTier = 2;
             mineSpeed = 5f;
@@ -364,6 +365,7 @@ public class UnitTypes implements ContentList{
             canBoost = true;
             armor = 9f;
             landShake = 2f;
+            riseSpeed = 0.05f;
 
             commandLimit = 10;
             mechFrontSway = 0.55f;
@@ -405,16 +407,18 @@ public class UnitTypes implements ContentList{
             rotateSpeed = 1.6f;
             canDrown = false;
             mechFrontSway = 1f;
+            buildSpeed = 3f;
 
             mechStepParticles = true;
             mechStepShake = 0.15f;
             ammoType = AmmoTypes.powerHigh;
 
-            speed = 0.36f;
-            boostMultiplier = 2.1f;
+            speed = 0.39f;
+            boostMultiplier = 2.2f;
             engineOffset = 12f;
             engineSize = 6f;
             lowAltitude = true;
+            riseSpeed = 0.02f;
 
             health = 7500f;
             armor = 9f;
@@ -441,7 +445,7 @@ public class UnitTypes implements ContentList{
                 cooldownTime = 200f;
 
                 bullet = new ContinuousLaserBulletType(){{
-                    damage = 28f;
+                    damage = 30f;
                     length = 175f;
                     hitEffect = Fx.hitMeltHeal;
                     drawSize = 420f;
@@ -452,7 +456,7 @@ public class UnitTypes implements ContentList{
 
                     shootEffect = Fx.greenLaserChargeSmall;
 
-                    incendChance = 0.09f;
+                    incendChance = 0.1f;
                     incendSpread = 5f;
                     incendAmount = 1;
 
@@ -558,6 +562,8 @@ public class UnitTypes implements ContentList{
                 shootCone = 180f;
                 ejectEffect = Fx.none;
                 shootSound = Sounds.explosion;
+                x = shootY = 0f;
+                mirror = false;
                 bullet = new BombBulletType(0f, 0f, "clear"){{
                     hitEffect = Fx.pulverize;
                     lifetime = 10f;
@@ -1370,6 +1376,8 @@ public class UnitTypes implements ContentList{
         }};
 
         oct = new UnitType("oct"){{
+            defaultController = DefenderAI::new;
+
             armor = 16f;
             health = 24000;
             speed = 0.8f;
