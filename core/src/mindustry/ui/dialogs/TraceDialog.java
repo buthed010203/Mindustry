@@ -48,6 +48,8 @@ public class TraceDialog extends BaseDialog{
                     Core.bundle.format("tracec.id", info.uuid) + "\n" +
                     Core.bundle.format("tracec.modclient", info.modded) + "\n" +
                     Core.bundle.format("tracec.mobile", info.mobile) + "\n" +
+                    Core.bundle.format("trace.times.joined", info.timesJoined) + "\n" +
+                    Core.bundle.format("trace.times.joined", info.timesKicked) + "\n" +
                     "");
         }).right().growX();
 
