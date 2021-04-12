@@ -5,6 +5,7 @@ import arc.struct.*;
 
 import mindustry.game.*;
 import mindustry.gen.*;
+import mindustry.net.Administration.*;
 
 import static mindustry.Vars.*;
 
@@ -29,26 +30,28 @@ public class PlayerHandler{
 
             var trace = antiGrief.tracer.get(id);
             if(trace == null){
+                // admin check is done in tracer.trace()
                 antiGrief.tracer.trace(player, t -> {
-                    if(t != null){
-                        if(antiGrief.joinMessages) AntiGrief.sendMessage(players.get(id) + "[#f8c471] joined." + " [#f5b041]uuid:[] " + t.uuid + " [#f5b041]ip:[] " + t.ip);
-                    }else{
-                        if(antiGrief.joinMessages) AntiGrief.sendMessage(players.get(id) + "[#f8c471] joined." + " [#f5b041]id:[] " + id);
-                    }
+                    if(antiGrief.joinMessages) sendMessage(player.id, t, false);
                 });
             }else{
-                if (antiGrief.joinMessages) AntiGrief.sendMessage(players.get(id) + "[#f8c471] joined." + " [#f5b041]uuid:[] " + trace.uuid + " [#f5b041]ip:[] " + trace.ip);
+                if (antiGrief.joinMessages) sendMessage(id, trace, false);
             }
         }
     }
 
     public void handleLeave(int id) {
         if (players.containsKey(id)) {
-            var trace = antiGrief.tracer.get(id);
-            if (antiGrief.leaveMessages) {
-                AntiGrief.sendMessage(players.get(id) + "[#f8c471] left." + ((antiGrief.autoTrace && trace != null) ? " [#f5b041]uuid:[] " + trace.uuid + " [#f5b041]ip:[] " + trace.ip : " [#f5b041]id:[] " + id));
-            }
+            if (antiGrief.leaveMessages) sendMessage(id, antiGrief.tracer.get(id), true);
             players.remove(id);
+        }
+    }
+
+    private void sendMessage(int playerId, TraceInfo trace, boolean leaving) {
+        if (trace != null && antiGrief.autoTrace) {
+            AntiGrief.sendMessage(players.get(playerId) + "[#f8c471] " + (leaving ? "left." : "joined.") + " [#f5b041]uuid:[] " + trace.uuid + " [#f5b041]ip:[] " + trace.ip);
+        } else {
+            AntiGrief.sendMessage(players.get(playerId) + "[#f8c471] " + (leaving ? "left." : "joined.") + " [#f5b041]id:[] " + playerId);
         }
     }
 }

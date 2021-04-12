@@ -69,10 +69,6 @@ public class Commands {
             AntiGrief.sendMessage("[#f8c471]Set nth deconstructed to [#f5b041]" + nth);
         });
 
-//        handler.register("toggleRemoved", "Displays removed blocks", args -> {
-//            toggleDisplayRemoved();
-//        });
-
         Events.on(EventType.StateChangeEvent.class, e -> {
             if (displayRemoved && !((e.from == State.playing && e.to == State.paused) || (e.from == State.paused && e.to == State.playing))) {
                 displayRemoved = false;
