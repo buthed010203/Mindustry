@@ -8,6 +8,7 @@ import mindustry.*;
 import mindustry.content.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
+import mindustry.game.SectorInfo.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
@@ -95,20 +96,20 @@ public class SStats implements SteamUserStatsCallback{
             }
         });
 
-        Events.on(TurnEvent.class, e -> {
-//            float total = 0;
-//            for(Planet planet : content.planets()){
-//                for(Sector sec : planet.sectors){
-//                    if(sec.hasBase()){
-//                        for(var v : sec.info.production.values()){
-//                            if(v.mean > 0) total += v.mean * 60;
-//                        }
-//                    }
-//                }
-//            }
+//         Events.on(TurnEvent.class, e -> {
+//             float total = 0;
+//             for(Planet planet : content.planets()){
+//                 for(Sector sec : planet.sectors){
+//                     if(sec.hasBase()){
+//                         for(ExportStat v : sec.info.production.values()){
+//                             if(v.mean > 0) total += v.mean * 60;
+//                         }
+//                     }
+//                 }
+//             }
 //
-//            SStat.maxProduction.max(Math.round(total));
-        });
+//             SStat.maxProduction.max(Math.round(total));
+//         });
 
         Events.run(Trigger.newGame, () -> Core.app.post(() -> {
             if(campaign() && player.core() != null && player.core().items.total() >= 10 * 1000){
@@ -177,11 +178,11 @@ public class SStats implements SteamUserStatsCallback{
             }
         });
 
-//        Events.on(UnitControlEvent.class, e -> {
-//            if(e.unit instanceof BlockUnitc block && block.tile().block == Blocks.router){
-//                becomeRouter.complete();
-//            }
-//        });
+//         Events.on(UnitControlEvent.class, e -> {
+//             if(e.unit instanceof BlockUnitc && ((BlockUnitc)e.unit).tile().block == Blocks.router){
+//                 becomeRouter.complete();
+//             }
+//         });
 
         Events.on(SchematicCreateEvent.class, e -> {
             SStat.schematicsCreated.add();
