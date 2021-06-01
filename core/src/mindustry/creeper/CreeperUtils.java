@@ -194,7 +194,6 @@ public class CreeperUtils {
         Timer.schedule(() -> {
 
             Call.infoPopup("\uE88B [" + getTrafficlightColor(Mathf.clamp((CreeperUtils.nullifiedCount / Math.max(1.0, creeperEmitters.size)), 0f, 1f)) + "]" + CreeperUtils.nullifiedCount + "/" + CreeperUtils.creeperEmitters.size + "[] emitters suspended", 10f, 20, 50, 20, 527, 0);
-            Call.infoPopup("\uE810 [" + getTrafficlightColor((float) Core.graphics.getFramesPerSecond() / 60) + "]" + Core.graphics.getFramesPerSecond() + "/60[] ticks per second", 10f, 20, 50, 20, 500, 0);
             // check for gameover
             if(CreeperUtils.nullifiedCount == CreeperUtils.creeperEmitters.size){
                 Timer.schedule(() -> {
@@ -210,7 +209,7 @@ public class CreeperUtils {
         }, 0, 10);
 
         Timer.schedule (() -> {
-            Call.infoPopup("\uE810 [" + getTrafficlightColor((float) Core.graphics.getFramesPerSecond() / 60) + "]" + Core.graphics.getFramesPerSecond() + "/60[] ticks per second", 1f, 20, 50, 20, 500, 0);
+            Call.infoPopup("\uE810 [" + getTrafficlightColor(Core.graphics.getFramesPerSecond() / 60f + "]" + Core.graphics.getFramesPerSecond() + "/60[] ticks per second", 1f, 20, 50, 20, 500, 0);
         }, 0, 1);
 
     }
