@@ -14,6 +14,7 @@ import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.sandbox.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.world.blocks.distribution.*;
+import mindustry.world.blocks.payloads.*;
 
 import static mindustry.Vars.*;
 
@@ -39,7 +40,7 @@ public class BlockHandler{
         var info = new TileInfo(tile.block() == Blocks.air ? lastInfo.block : tile.block(), tile.x, tile.y, tile.build == null ? lastInfo.rotation : tile.build.rotation, null, rotated ? InteractionType.rotated : InteractionType.built, player);
 
         if (info.block instanceof ConstructBlock) {
-            info.block = ((ConstructBuild)tile.build).cblock == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).cblock;
+            info.block = ((ConstructBuild)tile.build).current == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).current;
             if (info.block == null) {
                 Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged because block is null; sandbox=" + state.rules.infiniteResources);
                 return;
@@ -69,7 +70,7 @@ public class BlockHandler{
         var info = new TileInfo(tile.block() == Blocks.air ? lastInfo.block : tile.block(), tile.x, tile.y, tile.build == null ? lastInfo.rotation : tile.build.rotation, null, InteractionType.removed, player);
 
         if (info.block instanceof ConstructBlock) {
-            info.block = ((ConstructBuild)tile.build).cblock == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).cblock;
+            info.block = ((ConstructBuild)tile.build).current == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).current;
             if (info.block == null) {
                 Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged because block is null; sandbox=" + state.rules.infiniteResources);
                 return;
@@ -116,7 +117,7 @@ public class BlockHandler{
         var lastInfo = antiGrief.tileInfos.getLast(build.tile.x, build.tile.y);
 
         if (info.block instanceof ConstructBlock) {
-            info.block = ((ConstructBuild)build).cblock == null ? ((ConstructBuild)build).previous : ((ConstructBuild)build).cblock;
+            info.block = ((ConstructBuild)build).current == null ? ((ConstructBuild)build).previous : ((ConstructBuild)build).current;
             if (info.block == null) {
                 Log.info("Tile deconstruct (" + build.tile.x +  ", " +  build.tile.y + ") couldnt be logged because block is null; sandbox=" + state.rules.infiniteResources);
                 return;
@@ -135,7 +136,7 @@ public class BlockHandler{
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
         if (info.block instanceof ConstructBlock) {
-            info.block = ((ConstructBuild)tile.build).cblock == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).cblock;
+            info.block = ((ConstructBuild)tile.build).current == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).current;
             if (info.block == null) {
                 Log.info("Tile deconstruct (" + tile.x +  ", " +  tile.y + ") couldnt be logged because block is null; sandbox=" + state.rules.infiniteResources);
                 return;

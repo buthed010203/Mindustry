@@ -1083,32 +1083,32 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
         table.row();
 
         table.table(bars -> {
-                bars.defaults().growX().height(18f).pad(4);
-                displayBars(bars);
-            }).growX();
-            table.row();
-            table.table(this::displayConsumption).growX();
+            bars.defaults().growX().height(18f).pad(4);
 
-            boolean displayFlow = (block.category == Category.distribution || block.category == Category.liquid) && Core.settings.getBool("flow") && block.displayFlow;
+            displayBars(bars);
+        }).growX();
+        table.row();
+        table.table(this::displayConsumption).growX();
 
-            if(displayFlow){
-                String ps = " " + StatUnit.perSecond.localized();
+        boolean displayFlow = (block.category == Category.distribution || block.category == Category.liquid) && Core.settings.getBool("flow") && block.displayFlow;
 
-                if(items != null){
-                    table.row();
-                    table.left();
-                    table.table(l -> {
-                        Bits current = new Bits();
+        if(displayFlow){
+            String ps = " " + StatUnit.perSecond.localized();
 
-                        Runnable rebuild = () -> {
-                            l.clearChildren();
-                            l.left();
-                            for(Item item : content.items()){
-                                if(items.hasFlowItem(item)){
-                                    l.image(item.uiIcon).padRight(3f);
-                                    l.label(() -> items.getFlowRate(item) < 0 ? "..." : Strings.fixed(items.getFlowRate(item), 1) + ps).color(Color.lightGray);
-                                    l.row();
-                                }
+            if(items != null){
+                table.row();
+                table.left();
+                table.table(l -> {
+                    Bits current = new Bits();
+
+                    Runnable rebuild = () -> {
+                        l.clearChildren();
+                        l.left();
+                        for(Item item : content.items()){
+                            if(items.hasFlowItem(item)){
+                                l.image(item.uiIcon).padRight(3f);
+                                l.label(() -> items.getFlowRate(item) < 0 ? "..." : Strings.fixed(items.getFlowRate(item), 1) + ps).color(Color.lightGray);
+                                l.row();
                             }
                         }
                     };
@@ -1120,30 +1120,9 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
                                 current.set(item.id);
                                 rebuild.run();
                             }
-                        });
-                    }).left();
-                }
-
-                if(liquids != null){
-                    table.row();
-                    table.table(l -> {
-                        boolean[] had = {false};
-
-                        Runnable rebuild = () -> {
-                            l.clearChildren();
-                            l.left();
-                            l.image(() -> liquids.current().uiIcon).padRight(3f);
-                            l.label(() -> liquids.getFlowRate() < 0 ? "..." : Strings.fixed(liquids.getFlowRate(), 2) + ps).color(Color.lightGray);
-                        };
-
-                        l.update(() -> {
-                           if(!had[0] && liquids.hadFlow()){
-                               had[0] = true;
-                               rebuild.run();
-                           }
-                        });
-                    }).left();
-                }
+                        }
+                    });
+                }).left();
             }
 
             if(liquids != null){
@@ -1154,15 +1133,15 @@ abstract class BuildingComp implements Posc, Teamc, Healthc, Buildingc, Timerc, 
                     Runnable rebuild = () -> {
                         l.clearChildren();
                         l.left();
-                        l.image(() -> liquids.current().icon(Cicon.small)).padRight(3f);
+                        l.image(() -> liquids.current().uiIcon).padRight(3f);
                         l.label(() -> liquids.getFlowRate() < 0 ? "..." : Strings.fixed(liquids.getFlowRate(), 2) + ps).color(Color.lightGray);
                     };
 
                     l.update(() -> {
-                       if(!had[0] && liquids.hadFlow()){
-                           had[0] = true;
-                           rebuild.run();
-                       }
+                        if(!had[0] && liquids.hadFlow()){
+                            had[0] = true;
+                            rebuild.run();
+                        }
                     });
                 }).left();
             }

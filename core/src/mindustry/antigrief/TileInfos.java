@@ -20,6 +20,7 @@ import mindustry.world.blocks.experimental.*;
 import mindustry.world.blocks.logic.*;
 import mindustry.world.blocks.sandbox.*;
 import mindustry.world.blocks.units.*;
+import mindustry.world.blocks.payloads.*;
 
 import static arc.Core.camera;
 import static mindustry.Vars.*;
@@ -179,11 +180,11 @@ public class TileInfos{
                     str.append(" to ");
                     var command = (UnitCommand)config;
                     if(command == UnitCommand.attack){
-                        str.append(Iconc.commandAttack);
+                        str.append("\ue86e");
                     }else if(command == UnitCommand.rally){
-                        str.append(Iconc.commandRally);
+                        str.append("\ue86c");
                     }else if(command == UnitCommand.idle) {
-                        str.append(Iconc.cancel);
+                        str.append("\ue815");
                     }
                 }else if(block instanceof UnitFactory){
                     str.append(" to ");
@@ -203,13 +204,13 @@ public class TileInfos{
             }else if(interaction == InteractionType.rotated){
                 str.append(" to ");
                 if(rotation == 0){
-                    str.append(Iconc.right);
+                    str.append("\ue803"); //right
                 }else if(rotation == 1){
-                    str.append(Iconc.up);
+                    str.append("\ue804"); //up
                 }else if(rotation == 2){
-                    str.append(Iconc.left);
+                    str.append("\ue802"); //left
                 }else if(rotation == 3){
-                    str.append(Iconc.down);
+                    str.append("\ue805");//down
                 }
             }
 
