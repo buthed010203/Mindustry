@@ -7,7 +7,6 @@ import arc.math.*;
 import arc.util.*;
 import arc.struct.*;
 
-import mindustry.gen.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.graphics.*;
@@ -16,7 +15,6 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.experimental.*;
 import mindustry.world.blocks.logic.*;
 import mindustry.world.blocks.sandbox.*;
 import mindustry.world.blocks.units.*;
@@ -115,9 +113,9 @@ public class TileInfos{
             Draw.alpha(0.95f);
             Draw.mixcol(Color.white, 0.2f + Mathf.absin(Time.globalTime, 6f, 0.2f));
             if (antiGrief.displayFullSizeBlocks) {
-                Draw.rect(b.icon(Cicon.full), info.x * tilesize + b.offset, info.y * tilesize + b.offset, b.rotate ? info.rotation * 90 : 0f);
+                Draw.rect(b.fullIcon, info.x * tilesize + b.offset, info.y * tilesize + b.offset, b.rotate ? info.rotation * 90 : 0f);
             } else {
-                Draw.rect(b.icon(Cicon.medium), info.x * tilesize, info.y * tilesize, b.rotate ? info.rotation * 90 : 0f);
+                Draw.rect(b.fullIcon, info.x * tilesize, info.y * tilesize, b.rotate ? info.rotation * 90 : 0f);
             }
         }
         Draw.reset();
@@ -166,9 +164,9 @@ public class TileInfos{
                     }
                 }else if(block instanceof SwitchBlock){
                     if ((Boolean)config) {
-                        str.append(" to T");
+                        str.append(" to on");
                     } else {
-                        str.append(" to F");
+                        str.append(" to off");
                     }
                 }else if(block instanceof Sorter || block instanceof ItemSource || block instanceof LiquidSource){
                     if (config != null){
@@ -210,7 +208,7 @@ public class TileInfos{
                 }else if(rotation == 2){
                     str.append("\ue802"); //left
                 }else if(rotation == 3){
-                    str.append("\ue805");//down
+                    str.append("\ue805"); //down
                 }
             }
 
