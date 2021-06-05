@@ -158,11 +158,19 @@ public class ChatFragment extends Table{
 
             if(!shown && fadetime - i < 1f && fadetime - i >= 0f){
                 font.getCache().setAlphas((fadetime - i) * opacity);
-                Draw.color(0, 0, 0, shadowColor.a * (fadetime - i) * opacity);
+                if (messages.get(i).bgColor != null) {
+                    Draw.color(messages.get(i).bgColor.r, messages.get(i).bgColor.g, messages.get(i).bgColor.b, shadowColor.a * (fadetime - i) * opacity);
+                } else {
+                    Draw.color(0, 0, 0, shadowColor.a * (fadetime - i) * opacity);
+                }
             }else{
                 font.getCache().setAlphas(opacity);
             }
 
+            if (messages.get(i).bgColor != null) {
+                Draw.color(messages.get(i).bgColor);
+                Draw.alpha(opacity * shadowColor.a);
+            }
             Fill.crect(offsetx, theight - layout.height - 2, textWidth + Scl.scl(4f), layout.height + textspacing);
             Draw.color(shadowColor);
             Draw.alpha(opacity * shadowColor.a);
@@ -269,12 +277,16 @@ public class ChatFragment extends Table{
     }
 
     public void addMessage(String message, String sender){
+        addMessage(message, sender, null);
+    }
+
+    public void addMessage(String message, String sender, Color bgColor){
         if(sender == null && message == null) return;
-        messages.insert(0, new ChatMessage(message, sender));
+        messages.insert(0, new ChatMessage(message, sender, bgColor));
 
         fadetime += 1f;
         fadetime = Math.min(fadetime, messagesShown) + 1f;
-        
+
         if(scrollPos > 0) scrollPos++;
     }
 
@@ -282,10 +294,16 @@ public class ChatFragment extends Table{
         public final String sender;
         public final String message;
         public final String formattedMessage;
+        public final Color bgColor;
 
         public ChatMessage(String message, String sender){
+            this(message, sender, null);
+        }
+
+        public ChatMessage(String message, String sender, Color bgColor){
             this.message = message;
             this.sender = sender;
+            this.bgColor = bgColor;
             if(sender == null){ //no sender, this is a server message?
                 formattedMessage = message == null ? "" : message;
             }else{

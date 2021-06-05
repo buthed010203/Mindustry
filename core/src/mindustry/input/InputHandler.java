@@ -334,7 +334,7 @@ public abstract class InputHandler implements InputProcessor, GestureListener{
 
         if(player != null) {
             build.lastAccessed = player.name;
-            antiGrief.blockHandler.blockBuilt(player.unit(), build.tile, true);
+            antiGrief.blockHandler.blockChange(player.unit(), build.tile, true, false);
         }
         Fx.rotateBlock.at(build.x, build.y, build.block.size);
     }

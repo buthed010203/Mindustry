@@ -2,6 +2,7 @@ package mindustry.antigrief;
 
 import arc.*;
 import arc.util.*;
+import arc.graphics.*;
 import arc.math.geom.*;
 
 import mindustry.core.*;
@@ -19,6 +20,7 @@ public class AntiGrief {
     public boolean autoTrace;
     public boolean joinMessages;
     public boolean leaveMessages;
+    public boolean reactorWarn;
 
     public boolean displayFullSizeBlocks;
 
@@ -53,16 +55,21 @@ public class AntiGrief {
         leaveMessages = Core.settings.getBool("antigrief.leaveMessages", true);
         showHud = Core.settings.getBool("antigrief.showHud", true);
         displayFullSizeBlocks = Core.settings.getBool("antigrief.displayFullSizeBlocks", true);
+        reactorWarn = Core.settings.getBool("antigrief.reactorWarn", true);
 
         maxInfosPerTile = Core.settings.getInt("antigrief.maxInfosPerTile", 50);
         maxInfoInHud = Core.settings.getInt("antigrief.maxInfoInHud", 5);
     }
 
     public static void sendMessage(String msg) {
+        sendMessage(msg, null);
+    }
+
+    public static void sendMessage(String msg, Color bgColor) {
         if (headless) {
             Log.info("[AntiGrief] " + msg);
         } else {
-            ui.chatfrag.addMessage(msg, null);
+            ui.chatfrag.addMessage(msg, null, bgColor);
         }
     }
 

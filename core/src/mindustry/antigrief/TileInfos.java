@@ -121,7 +121,7 @@ public class TileInfos{
         Draw.reset();
     }
 
-    static class TileInfo {
+    public static class TileInfo {
         public Block block;
 
         public int x;

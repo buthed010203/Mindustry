@@ -471,6 +471,10 @@ public class SettingsMenuDialog extends Dialog{
             Vars.antiGrief.displayFullSizeBlocks = val;
             Vars.antiGrief.saveSettings();
         });
+        antiGrief.checkPref("antigrief.reactorWarn", bundle.get("settings.antigrief.reactorWarn"), Vars.antiGrief.reactorWarn, val -> {
+            Vars.antiGrief.reactorWarn = val;
+            Vars.antiGrief.saveSettings();
+        });
     }
 
     public void exportData(Fi file) throws IOException{

@@ -81,7 +81,7 @@ public class Build{
 
             if(unit != null && unit.isPlayer()){
                 tile.build.lastAccessed = unit.getPlayer().name;
-                antiGrief.blockHandler.blockBuilt(unit, tile, true);
+                antiGrief.blockHandler.blockChange(unit, tile, true, false);
             }
             Fx.rotateBlock.at(tile.build.x, tile.build.y, tile.build.block.size);
             return;
