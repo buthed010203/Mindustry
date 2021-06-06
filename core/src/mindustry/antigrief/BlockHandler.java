@@ -53,7 +53,7 @@ public class BlockHandler{
         if (antiGrief.reactorWarn && info.interaction == InteractionType.built && info.block instanceof NuclearReactor) {
             var closetCore = unit.closestCore();
             if (Mathf.dst(info.x, info.y, closetCore.tile.x, closetCore.tile.y) < ((NuclearReactor)info.block).explosionRadius + info.block.size + closetCore.block.size) {
-                AntiGrief.sendMessage(Strings.format("@[white] is building a [accent]reactor[] at (@, @) @ blocks away from core", info.player.name, info.x, info.y, Mathf.round(Mathf.dst(info.x, info.y, closetCore.tile.x, closetCore.tile.y))), Color.red);
+                AntiGrief.sendMessage(Strings.format("@[white] is building a [accent]reactor[] at (@, @) @ blocks away from core", info.player.name, info.x, info.y, Mathf.round(Mathf.dst(info.x, info.y, closetCore.tile.x, closetCore.tile.y))), Color.brick);
             }
         }
 
@@ -128,9 +128,9 @@ public class BlockHandler{
     }
 
     private final Pattern p = Pattern.compile("ucontrol build [0-9a-zA-Z-@]+ [0-9a-zA-Z-@]+ @((micro)|(logic)|(hyper))-processor [0-9] @this");
-    private void checkLogicVirus(String code, TileInfo info) {
+    public void checkLogicVirus(String code, TileInfo info) {
         if (code.contains("ubind @") && p.matcher(code).find()) {
-            AntiGrief.sendMessage(Strings.format("@[white] is building a [accent]potential logic virus[] at (@, @)", info.player.name, info.x, info.y, info.x, info.y), Color.red);
+            AntiGrief.sendMessage(Strings.format("@[white] @ a [accent]potential logic virus[] at (@, @)", info.player.name, info.interaction == InteractionType.configured ? "has configured" : "has built", info.x, info.y, info.x, info.y), Color.brick);
         }
     }
 

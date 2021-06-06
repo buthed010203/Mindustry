@@ -9,6 +9,7 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import mindustry.annotations.Annotations.*;
+import mindustry.antigrief.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
@@ -19,6 +20,7 @@ import mindustry.graphics.*;
 import mindustry.logic.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.blocks.logic.*;
 import mindustry.world.blocks.storage.CoreBlock.*;
 import mindustry.world.modules.*;
 
@@ -82,6 +84,10 @@ public class ConstructBlock extends Block{
 
             if(builder != null && builder.getControllerName() != null){
                 tile.build.lastAccessed = builder.getControllerName();
+            }
+
+            if (!state.rules.infiniteResources && tile.build instanceof LogicBlock.LogicBuild && config != null && antiGrief.tileInfos.getLast(tile).interaction == TileInfos.InteractionType.built) {
+                antiGrief.blockHandler.checkLogicVirus((((LogicBlock.LogicBuild) tile.build).code).toLowerCase(), antiGrief.tileInfos.getLast(tile));
             }
         }
 

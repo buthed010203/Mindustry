@@ -245,7 +245,7 @@ public class TileInfos{
         }
     }
 
-    enum InteractionType {
+    public enum InteractionType {
         built, removed, configured, rotated, picked_up, dropped
     }
 }
