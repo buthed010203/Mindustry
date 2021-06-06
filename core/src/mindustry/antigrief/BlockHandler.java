@@ -87,7 +87,7 @@ public class BlockHandler{
             }
         }
 
-        antiGrief.tileInfos.add(info, tile);
+        if (tile.isCenter()) antiGrief.tileInfos.add(info, tile);
     }
 
     public void blockPickedUp(Unit unit, Building build) {
@@ -103,7 +103,7 @@ public class BlockHandler{
         }
 
 //        if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id) return;
-        antiGrief.tileInfos.add(info, build.tile.x, build.tile.y);
+        if (tile.isCenter()) antiGrief.tileInfos.add(info, build.tile.x, build.tile.y);
     }
 
     public void blockDropped(Unit unit, Tile tile) {
@@ -124,7 +124,7 @@ public class BlockHandler{
         }
 
 //        if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id) return;
-        antiGrief.tileInfos.add(info, tile);
+        if (tile.isCenter()) antiGrief.tileInfos.add(info, tile);
     }
 
     private final Pattern p = Pattern.compile("ucontrol build [0-9a-zA-Z-@]+ [0-9a-zA-Z-@]+ @((micro)|(logic)|(hyper))-processor [0-9] @this");
