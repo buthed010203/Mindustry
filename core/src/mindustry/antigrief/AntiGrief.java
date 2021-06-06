@@ -21,6 +21,7 @@ public class AntiGrief {
     public boolean joinMessages;
     public boolean leaveMessages;
     public boolean reactorWarn;
+    public boolean logicVirusWarn;
 
     public boolean displayFullSizeBlocks;
 
@@ -42,6 +43,8 @@ public class AntiGrief {
         Core.settings.put("antigrief.leaveMessages", leaveMessages);
         Core.settings.put("antigrief.showHud", showHud);
         Core.settings.put("antigrief.displayFullSizeBlocks", displayFullSizeBlocks);
+        Core.settings.put("antigrief.reactorWarn", reactorWarn);
+        Core.settings.put("antigrief.logicVirusWarn", logicVirusWarn);
 
         Core.settings.put("antigrief.maxInfosPerTile", maxInfosPerTile);
         Core.settings.put("antigrief.maxInfoInHud", maxInfoInHud);
@@ -56,6 +59,7 @@ public class AntiGrief {
         showHud = Core.settings.getBool("antigrief.showHud", true);
         displayFullSizeBlocks = Core.settings.getBool("antigrief.displayFullSizeBlocks", true);
         reactorWarn = Core.settings.getBool("antigrief.reactorWarn", true);
+        logicVirusWarn = Core.settings.getBool("antigrief.logicVirusWarn", true);
 
         maxInfosPerTile = Core.settings.getInt("antigrief.maxInfosPerTile", 50);
         maxInfoInHud = Core.settings.getInt("antigrief.maxInfoInHud", 5);

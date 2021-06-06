@@ -475,6 +475,10 @@ public class SettingsMenuDialog extends Dialog{
             Vars.antiGrief.reactorWarn = val;
             Vars.antiGrief.saveSettings();
         });
+        antiGrief.checkPref("antigrief.logicVirusWarn", bundle.get("settings.antigrief.logicVirusWarn"), Vars.antiGrief.logicVirusWarn, val -> {
+            Vars.antiGrief.logicVirusWarn = val;
+            Vars.antiGrief.saveSettings();
+        });
     }
 
     public void exportData(Fi file) throws IOException{

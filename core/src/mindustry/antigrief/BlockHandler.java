@@ -17,6 +17,8 @@ import mindustry.world.blocks.sandbox.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.world.blocks.distribution.*;
 
+import java.util.regex.*;
+
 import static mindustry.Vars.*;
 
 public class BlockHandler{
@@ -25,8 +27,8 @@ public class BlockHandler{
     }
 
     public void blockChange(Unit unit, Tile tile, boolean rotated, boolean removing) {
-        if (tile.build == null) {
-            Log.warn(Strings.format("Skipping tile (@, @) change log as tile.build is null | sandbox = @ | rotated = @ | block = @ | removing = @", tile.x, tile.y, state.rules.infiniteResources, rotated, tile.block().name, removing));
+        if (tile.build == null && tile.block() == Blocks.air) {
+            Log.warn(Strings.format("Skipping tile (@, @) change log as tile.build is null and block is air | sandbox = @ | block = @ | removing = @", tile.x, tile.y, state.rules.infiniteResources, rotated, removing));
             return;
         }
 
@@ -36,26 +38,26 @@ public class BlockHandler{
         // set the block
         if (tile.block() instanceof ConstructBlock) {
             info.block = ((ConstructBuild)tile.build).current == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).current;
-        } else {
-            if (tile.block() == Blocks.air && lastInfo != null) {
-                info.block = lastInfo.block;
-            }
+        } else if (tile.block() == Blocks.air && lastInfo != null) {
+            info.block = lastInfo.block;
+        } else if (tile.build == null) {
+            info.block = tile.block();
         }
 
         if (info.block == null) info.block = tile.block();
-
-        if (lastInfo != null && lastInfo.block == info.block && info.block.quickRotate) {
-            if (lastInfo.rotation != info.rotation) info.interaction = InteractionType.rotated;
-        }
+        // incase it got rotated
+        if (lastInfo != null && lastInfo.block == info.block && info.block.quickRotate && lastInfo.rotation != info.rotation) info.interaction = InteractionType.rotated;
+        // avoid logging the same interactions within 1sec
+        if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id && lastInfo.rotation == info.rotation && (lastInfo.timestamp - info.timestamp < 1000)) return;
 
         if (antiGrief.reactorWarn && info.interaction == InteractionType.built && info.block instanceof NuclearReactor) {
             var closetCore = unit.closestCore();
             if (Mathf.dst(info.x, info.y, closetCore.tile.x, closetCore.tile.y) < ((NuclearReactor)info.block).explosionRadius + info.block.size + closetCore.block.size) {
-                AntiGrief.sendMessage(Strings.format("@ is building reactor at (@, @) @ blocks away from core", info.player.name, info.x, info.y, Mathf.round(Mathf.dst(info.x, info.y, closetCore.tile.x, closetCore.tile.y))), Color.red);
+                AntiGrief.sendMessage(Strings.format("@[white] is building a [accent]reactor[] at (@, @) @ blocks away from core", info.player.name, info.x, info.y, Mathf.round(Mathf.dst(info.x, info.y, closetCore.tile.x, closetCore.tile.y))), Color.red);
             }
         }
 
-        if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id && lastInfo.rotation == info.rotation && (lastInfo.timestamp - info.timestamp < 1000)) return;
+        if (antiGrief.logicVirusWarn && tile.build instanceof LogicBlock.LogicBuild) checkLogicVirus(((LogicBlock.LogicBuild)tile.build).code.toLowerCase(), info);
         antiGrief.tileInfos.add(info, tile);
     }
 
@@ -68,6 +70,7 @@ public class BlockHandler{
         var info = new TileInfo(tile.block(), tile.x, tile.y, tile.build.rotation, config, InteractionType.configured, new SemiPlayer(p.name(), p.id));
         var lastInfo = antiGrief.tileInfos.getLast(tile);
 
+        if (antiGrief.logicVirusWarn && tile.build instanceof LogicBlock.LogicBuild) checkLogicVirus(((LogicBlock.LogicBuild)tile.build).code.toLowerCase(), info);
         // don't add if it was reconfiguring of the same block by the same player
         if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id) {
             // spam clicking power nodes / messed up mess driver / changing small things in logic blocks within 20 secs
@@ -89,7 +92,7 @@ public class BlockHandler{
 
     public void blockPickedUp(Unit unit, Building build) {
         var info = new TileInfo(build.block(), build.tile.x, build.tile.y, build.rotation, null, InteractionType.picked_up, new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id));
-        var lastInfo = antiGrief.tileInfos.getLast(build.tile.x, build.tile.y);
+//        var lastInfo = antiGrief.tileInfos.getLast(build.tile.x, build.tile.y);
 
         if (info.block instanceof ConstructBlock) {
             info.block = ((ConstructBuild)build).current == null ? ((ConstructBuild)build).previous : ((ConstructBuild)build).current;
@@ -110,7 +113,7 @@ public class BlockHandler{
         }
 
         var info = new TileInfo(tile.block(), tile.x, tile.y, tile.build.rotation, null, InteractionType.dropped, new SemiPlayer(unit.getPlayer().name(), unit.getPlayer().id));
-        var lastInfo = antiGrief.tileInfos.getLast(tile);
+//        var lastInfo = antiGrief.tileInfos.getLast(tile);
 
         if (info.block instanceof ConstructBlock) {
             info.block = ((ConstructBuild)tile.build).current == null ? ((ConstructBuild)tile.build).previous : ((ConstructBuild)tile.build).current;
@@ -122,6 +125,13 @@ public class BlockHandler{
 
 //        if (lastInfo != null && lastInfo.block == info.block && lastInfo.interaction == info.interaction && lastInfo.player.id == info.player.id) return;
         antiGrief.tileInfos.add(info, tile);
+    }
+
+    private final Pattern p = Pattern.compile("ucontrol build [0-9a-zA-Z-@]+ [0-9a-zA-Z-@]+ @((micro)|(logic)|(hyper))-processor [0-9] @this");
+    private void checkLogicVirus(String code, TileInfo info) {
+        if (code.contains("ubind @") && p.matcher(code).find()) {
+            AntiGrief.sendMessage(Strings.format("@[white] is building a [accent]potential logic virus[] at (@, @)", info.player.name, info.x, info.y, info.x, info.y), Color.red);
+        }
     }
 
     private void register() {
