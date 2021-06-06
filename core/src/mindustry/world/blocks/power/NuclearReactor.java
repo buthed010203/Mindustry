@@ -77,6 +77,7 @@ public class NuclearReactor extends PowerGenerator{
     public void drawPlace(int x, int y, int rotation, boolean valid) {
         super.drawPlace(x, y, rotation, valid);
         Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, explosionRadius * tilesize, Color.scarlet);
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, (explosionRadius / 2) * tilesize, Color.orange);
     }
 
     public class NuclearReactorBuild extends GeneratorBuild{
