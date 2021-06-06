@@ -130,7 +130,7 @@ public class BlockHandler{
     private final Pattern p = Pattern.compile("ucontrol build [0-9a-zA-Z-@]+ [0-9a-zA-Z-@]+ @((micro)|(logic)|(hyper))-processor [0-9] @this");
     public void checkLogicVirus(String code, TileInfo info) {
         if (code.contains("ubind @") && p.matcher(code).find()) {
-            AntiGrief.sendMessage(Strings.format("@[white] @ a [accent]potential logic virus[] at (@, @)", info.player.name, info.interaction == InteractionType.configured ? "has configured" : "has built", info.x, info.y, info.x, info.y), Color.brick);
+            AntiGrief.sendMessage(Strings.format("@[white] @ a [accent]potential logic virus[] at (@, @)", info.player.name, info.interaction == InteractionType.configured ? "has configured" : "has built", info.x, info.y), Color.brick);
         }
     }
 

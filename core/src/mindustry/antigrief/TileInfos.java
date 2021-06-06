@@ -9,6 +9,7 @@ import arc.struct.*;
 
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
+import mindustry.gen.Player;
 import mindustry.graphics.*;
 import mindustry.net.Administration.*;
 import mindustry.type.*;
@@ -231,9 +232,13 @@ public class TileInfos{
         }
     }
 
-    static class SemiPlayer {
+    public static class SemiPlayer {
         public String name;
         public int id;
+
+        public SemiPlayer(Player p){
+            this(p.name, p.id);
+        }
 
         public SemiPlayer(String name, int id){
             this.name = name;

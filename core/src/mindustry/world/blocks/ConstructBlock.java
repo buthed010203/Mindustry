@@ -86,8 +86,12 @@ public class ConstructBlock extends Block{
                 tile.build.lastAccessed = builder.getControllerName();
             }
 
-            if (!state.rules.infiniteResources && tile.build instanceof LogicBlock.LogicBuild && config != null && antiGrief.tileInfos.getLast(tile).interaction == TileInfos.InteractionType.built) {
-                antiGrief.blockHandler.checkLogicVirus((((LogicBlock.LogicBuild) tile.build).code).toLowerCase(), antiGrief.tileInfos.getLast(tile));
+            if (builder != null && builder.isPlayer() && !state.rules.infiniteResources && tile.build instanceof LogicBlock.LogicBuild && config != null) {
+                if (antiGrief.tileInfos.getLast(tile) == null) {
+                    antiGrief.blockHandler.checkLogicVirus((((LogicBlock.LogicBuild) tile.build).code).toLowerCase(), new TileInfos.TileInfo(null, tile.x, tile.y, 0, null, TileInfos.InteractionType.built, new TileInfos.SemiPlayer(builder.getPlayer())));
+                } else if (antiGrief.tileInfos.getLast(tile).player.id == builder.getPlayer().id) {
+                    antiGrief.blockHandler.checkLogicVirus((((LogicBlock.LogicBuild) tile.build).code).toLowerCase(), antiGrief.tileInfos.getLast(tile));
+                }
             }
         }
 
