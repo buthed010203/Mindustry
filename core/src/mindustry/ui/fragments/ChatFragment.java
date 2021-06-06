@@ -159,18 +159,18 @@ public class ChatFragment extends Table{
             if(!shown && fadetime - i < 1f && fadetime - i >= 0f){
                 font.getCache().setAlphas((fadetime - i) * opacity);
                 if (messages.get(i).bgColor != null) {
-                    Draw.color(messages.get(i).bgColor.r, messages.get(i).bgColor.g, messages.get(i).bgColor.b, shadowColor.a * (fadetime - i) * opacity);
+                    Draw.color(messages.get(i).bgColor.r * (fadetime - i) * opacity, messages.get(i).bgColor.g * (fadetime - i) * opacity, messages.get(i).bgColor.b * (fadetime - i) * opacity, shadowColor.a * (fadetime - i) * opacity);
                 } else {
                     Draw.color(0, 0, 0, shadowColor.a * (fadetime - i) * opacity);
                 }
             }else{
+                if (messages.get(i).bgColor != null) {
+                    Draw.color(messages.get(i).bgColor);
+                    Draw.alpha(opacity * shadowColor.a);
+                }
                 font.getCache().setAlphas(opacity);
             }
 
-            if (messages.get(i).bgColor != null) {
-                Draw.color(messages.get(i).bgColor);
-                Draw.alpha(opacity * shadowColor.a);
-            }
             Fill.crect(offsetx, theight - layout.height - 2, textWidth + Scl.scl(4f), layout.height + textspacing);
             Draw.color(shadowColor);
             Draw.alpha(opacity * shadowColor.a);
