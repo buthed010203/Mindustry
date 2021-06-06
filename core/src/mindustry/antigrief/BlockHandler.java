@@ -58,7 +58,7 @@ public class BlockHandler{
         }
 
         if (antiGrief.logicVirusWarn && tile.build instanceof LogicBlock.LogicBuild) checkLogicVirus(((LogicBlock.LogicBuild)tile.build).code.toLowerCase(), info);
-        antiGrief.tileInfos.add(info, tile);
+        if (tile.isCenter()) antiGrief.tileInfos.add(info, tile);
     }
 
     public void blockConfig(Player p, Tile tile, Object config) {
