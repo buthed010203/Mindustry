@@ -163,6 +163,8 @@ public class BulletType extends Content implements Cloneable{
     public float puddleAmount = 5f;
     public Liquid puddleLiquid = Liquids.water;
 
+    public boolean displayAmmoMultiplier = true;
+
     public float lightRadius = -1f;
     public float lightOpacity = 0.3f;
     public Color lightColor = Pal.powerLight;
@@ -401,8 +403,14 @@ public class BulletType extends Content implements Cloneable{
             //pierceBuilding is not enabled by default, because a bullet may want to *not* pierce buildings
         }
 
-        if(lightningType == null){
-            lightningType = !collidesAir ? Bullets.damageLightningGround : Bullets.damageLightning;
+        if(lightning > 0){
+            if(status == StatusEffects.none){
+                status = StatusEffects.shocked;
+            }
+
+            if(lightningType == null){
+                lightningType = !collidesAir ? Bullets.damageLightningGround : Bullets.damageLightning;
+            }
         }
     }
 
