@@ -53,7 +53,7 @@ public class SuicideAI extends GroundAI{
             }
 
             //do not move toward walls or transport blocks
-            if(!(target instanceof Building) && !(build.block instanceof CoreBlock)){
+            if(!(target instanceof Building) && !(target instanceof CoreBlock)){
                 blockedByBlock = false;
 
                 //raycast for target
