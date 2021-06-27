@@ -157,6 +157,9 @@ nb-configuration.xml
 .gradle/
 gradle-app.setting
 
+## Shell scripts
+compile.sh
+
 ## OS Specific
 .DS_Store
 Thumbs.db
