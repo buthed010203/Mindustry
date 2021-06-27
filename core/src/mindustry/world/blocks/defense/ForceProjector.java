@@ -115,23 +115,10 @@ public class ForceProjector extends Block{
     public class ForceBuild extends Building implements Ranged{
         public boolean broken = true;
         public float buildup, radscl, hit, warmup, phaseHeat, healthLeft;
-        public ForceDraw drawer;
 
         @Override
         public float range(){
             return realRadius();
-        }
-
-        @Override
-        public void created(){
-            super.created();
-            drawer = ForceDraw.create();
-            drawer.build = this;
-            drawer.set(x, y);
-            drawer.add();
-
-            healthLeft = shieldHealth;
-            shields.add(this);
         }
 
         @Override
@@ -144,7 +131,6 @@ public class ForceProjector extends Block{
             float radius = realRadius();
             if(!broken && radius > 1f) Fx.forceShrink.at(x, y, radius, team.color);
             super.onRemoved();
-            drawer.remove();
             dead = true;
         }
 
