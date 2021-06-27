@@ -310,9 +310,7 @@ public class CreeperUtils {
             }
 
         }
-        if (tile != null && tile.x < world.width() && tile.y < world.height() && tile.creep >= 1f &&
-                !(tile.block() instanceof CoreBlock) &&
-                (creeperLevels.getOrDefault(tile.block(), 10)) < Math.round(tile.creep) || tile.block() instanceof TreeBlock){
+        if (tile.x < world.width() && tile.y < world.height() && tile.creep >= 1f && !(tile.block() instanceof CoreBlock) && creeperLevels.getOrDefault(tile.block(), 10) < Math.round(tile.creep) || tile.block() instanceof TreeBlock){
 
                 tile.setNet(creeperBlocks.get(Mathf.clamp(Math.round(tile.creep), 0, 10)), creeperTeam, Mathf.random(0, 3));
         }
@@ -321,7 +319,7 @@ public class CreeperUtils {
     public static boolean canTransfer(Tile source, Tile target){
         boolean amountValid = source.creep > minCreeper;
 
-        if(!validTile(source) || !validTile(target))
+        if(!validTile(target))
             return false;
 
         if(target.block() instanceof TreeBlock && amountValid)
@@ -340,10 +338,7 @@ public class CreeperUtils {
     }
 
     public static boolean validTile(Tile tile){
-        if(tile == null)
-            return false;
-
-        return true;
+        return tile != null;
     }
 
     public static void transferCreeper(Tile source, Tile target) {
