@@ -241,6 +241,7 @@ public class CreeperUtils {
         for(ForceProjector.ForceBuild shield : shields){
             if(shield == null || shield.dead || shield.health <= 0f || shield.healthLeft <= 0f) {
                 shields.remove(shield);
+                if (shield == null) continue;
                 Core.app.post(shield::kill);
 
                 float percentage = 1f - shield.healthLeft / ((ForceProjector) shield.block).shieldHealth;
