@@ -2,15 +2,12 @@ package mindustry.creeper;
 
 import arc.Core;
 import arc.Events;
-import arc.func.Cons;
-import arc.func.Intc;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Timer;
-import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Bullets;
 import mindustry.content.Fx;
@@ -19,7 +16,6 @@ import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.world.Block;
-import mindustry.world.Build;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.ForceProjector;
 import mindustry.world.blocks.environment.Cliff;
@@ -28,7 +24,6 @@ import mindustry.world.blocks.environment.TreeBlock;
 import mindustry.world.blocks.storage.CoreBlock;
 
 import java.util.HashMap;
-import java.util.concurrent.CompletableFuture;
 
 import static mindustry.Vars.state;
 import static mindustry.Vars.world;
