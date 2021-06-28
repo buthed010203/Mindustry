@@ -113,7 +113,7 @@ public class ForceProjector extends Block{
     }
 
     public class ForceBuild extends Building implements Ranged{
-        public boolean broken = true;
+        public boolean broken = false;
         public float buildup, radscl, hit, warmup, phaseHeat, healthLeft;
 
         @Override
