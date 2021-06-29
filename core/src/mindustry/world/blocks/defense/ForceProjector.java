@@ -122,6 +122,12 @@ public class ForceProjector extends Block{
         }
 
         @Override
+        public void created(){
+            healthLeft = shieldHealth;
+            shields.add(this);
+        }
+
+        @Override
         public boolean shouldAmbientSound(){
             return !broken && realRadius() > 1f;
         }
