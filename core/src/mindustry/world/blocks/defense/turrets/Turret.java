@@ -446,7 +446,8 @@ public class Turret extends ReloadTurret{
         protected void bullet(BulletType type, float angle){
             float lifeScl = type.scaleVelocity ? Mathf.clamp(Mathf.dst(x + tr.x, y + tr.y, targetPos.x, targetPos.y) / type.range(), minRange / type.range(), range / type.range()) : 1f;
 
-            type.create(this, team, x + tr.x, y + tr.y, angle, 1f + Mathf.range(velocityInaccuracy), lifeScl);
+            if(block == Blocks.foreshadow) type.createNet(team, x + tr.x, y + tr.y, angle, -1, 1f + Mathf.range(velocityInaccuracy), lifeScl); // Custom foreshadow bullet
+            else type.create(this, team, x + tr.x, y + tr.y, angle, 1f + Mathf.range(velocityInaccuracy), lifeScl);
         }
 
         protected void effects(){
