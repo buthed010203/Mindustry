@@ -124,6 +124,7 @@ public class ServerControl implements ApplicationListener{
             }
 
             Seq<String> commands = new Seq<>();
+            commands.add("host");
 
             if(args.length > 0){
                 commands.addAll(Strings.join(" ", args).split(","));
